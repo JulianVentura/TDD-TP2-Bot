@@ -98,11 +98,11 @@ describe 'BotClient' do
     app.run_once
   end
 
-  it 'should get a /start message and respond with Hola' do
+  it 'should get a /start message and respond with Moscu te saluda' do
     token = 'fake_token'
 
     when_i_send_text(token, '/start')
-    then_i_get_text(token, 'Hola, Emilio')
+    then_i_get_text(token, 'Moscu te saluda, Emilio')
 
     app = BotClient.new(token)
 
