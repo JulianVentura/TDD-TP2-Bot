@@ -6,7 +6,7 @@ class Routes
   include Routing
 
   on_message '/start' do |bot, message|
-    bot.api.send_message(chat_id: message.chat.id, text: "Hola, #{message.from.first_name}")
+    bot.api.send_message(chat_id: message.chat.id, text: "Moscu te saluda, #{message.from.first_name}")
   end
 
   on_message_pattern %r{/say_hi (?<name>.*)} do |bot, message, args|
