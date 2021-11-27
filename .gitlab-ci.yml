@@ -5,7 +5,7 @@ services:
 
 variables:
   REGISTRY_URL: registry.gitlab.com/fiuba-memo2/tp2
-  APP_NAME: telegram-bot-example
+  APP_NAME: moscu-bot
   KUBE_NAMESPACE_PREFIX: moscu
 
 stages:
