@@ -108,4 +108,15 @@ describe 'BotClient' do
 
     app.run_once
   end
+
+  it 'deberia responder a "/registrar juan, juan@test.com" exitosamente' do
+    token = 'fake_token'
+
+    when_i_send_text(token, '/registrar juan, juan@test.com')
+    then_i_get_text(token, 'Bienvenido juan')
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
 end

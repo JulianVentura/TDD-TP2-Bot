@@ -42,5 +42,7 @@ class BotClient
     @logger.debug "From: @#{message.from.username}, message: #{message.inspect}"
 
     Routes.new.handle(bot, message)
+  rescue StandardError => e
+    @logger.fatal e.message
   end
 end

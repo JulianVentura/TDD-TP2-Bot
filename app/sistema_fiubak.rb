@@ -1,7 +1,9 @@
+require_relative './respuestas/respuesta_registro'
+
 class SistemaFiubak
   def initialize
     @servicio = Faraday.new(
-      url: 'http://localhost:3000',
+      url: 'http://webapp:3000',
       headers: { 'Content-Type' => 'application/json' }
     )
   end
