@@ -25,4 +25,25 @@ describe 'Parseador' do
       Parseador.new.parsear_registro(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_registro levanta ErrorParseo cuando hay mas de dos argumentos' do
+    nombre = 'juan'
+    email = 'juan@mail.com'
+    fecha = '12-12-12'
+    id = 5
+    argumentos = "#{nombre},#{email},#{fecha}"
+
+    expect  do
+      Parseador.new.parsear_registro(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
+
+  it 'parsear_registro levanta ErrorParseo cuando hay argumentos es nil' do
+    id = 5
+    argumentos = nil
+
+    expect  do
+      Parseador.new.parsear_registro(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end
