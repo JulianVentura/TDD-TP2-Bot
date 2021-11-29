@@ -1,4 +1,5 @@
 require_relative './respuestas/respuesta_registro'
+require './app/error_api'
 
 class SistemaFiubak
   def initialize
@@ -15,6 +16,9 @@ class SistemaFiubak
     end
 
     respuesta_json = JSON.parse(respuesta.body)
+
+    raise ErrorApi, respuesta_json['error'] unless respuesta.status == 201
+
     nombre = respuesta_json['nombre']
     email = respuesta_json['email']
     id = respuesta_json['id']
