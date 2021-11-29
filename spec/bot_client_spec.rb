@@ -112,13 +112,35 @@ describe 'BotClient' do
   it 'deberia responder a "/registrar juan, juan@test.com" exitosamente' do
     token = 'fake_token'
 
-    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201,
-                                            nombre: 'juan',
-                                            email: 'juan@mail.com',
-                                            id: 123)
+    body = {
+      nombre: 'juan',
+      email: 'juan@mail.com',
+      id: 123
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201, body)
 
     when_i_send_text(token, '/registrar juan, juan@test.com')
     then_i_get_text(token, 'Bienvenido juan')
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
+
+  it 'deberia responder a "/registrar juan, juan@test.com" con error' do
+    token = 'fake_token'
+
+    mensaje_error = 'Error: Ya estas registrado'
+
+    body = {
+      error: mensaje_error
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 400, body)
+
+    when_i_send_text(token, '/registrar juan, juan@test.com')
+    then_i_get_text(token, mensaje_error)
 
     app = BotClient.new(token)
 

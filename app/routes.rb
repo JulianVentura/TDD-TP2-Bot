@@ -1,6 +1,7 @@
 require "#{File.dirname(__FILE__)}/../lib/routing"
 require "#{File.dirname(__FILE__)}/../lib/version"
 require_relative './sistema_fiubak'
+require './app/error_api'
 
 class Routes
   include Routing
@@ -17,6 +18,9 @@ class Routes
 
     respuesta = SistemaFiubak.new.registrar(nombre, email, message.chat.id)
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido #{respuesta.nombre}")
+
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
   on_message '/version' do |bot, message|
