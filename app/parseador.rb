@@ -9,6 +9,6 @@ class Parseador
 
     raise ErrorParseo if argumentos.size != 2
 
-    DatosRegistro.new(argumentos[0], argumentos[1], id)
+    DatosRegistro.new(argumentos[0], argumentos[1].strip, id)
   end
 end

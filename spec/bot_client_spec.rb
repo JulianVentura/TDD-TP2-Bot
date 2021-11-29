@@ -146,4 +146,17 @@ describe 'BotClient' do
 
     app.run_once
   end
+
+  it 'deberia responder a "/registrar juan" con mensaje de ayuda' do
+    token = 'fake_token'
+
+    mensaje_error = 'Error: El uso del comando es /registrar <nombre>,<email>'
+
+    when_i_send_text(token, '/registrar juan')
+    then_i_get_text(token, mensaje_error)
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
 end
