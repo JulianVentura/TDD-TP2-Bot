@@ -112,6 +112,11 @@ describe 'BotClient' do
   it 'deberia responder a "/registrar juan, juan@test.com" exitosamente' do
     token = 'fake_token'
 
+    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201,
+                                            nombre: 'juan',
+                                            email: 'juan@mail.com',
+                                            id: 123)
+
     when_i_send_text(token, '/registrar juan, juan@test.com')
     then_i_get_text(token, 'Bienvenido juan')
 

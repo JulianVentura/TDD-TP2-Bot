@@ -1,9 +1,10 @@
 require 'webmock/rspec'
+require 'spec_helper'
 
-RSpec.configure do |config|
-  config.before(:each) do
-    stub_request(:post, 'http://webapp:3000/usuarios')
-      .with(headers: { 'Content-Type' => 'application/json' })
-      .to_return(status: 201, body: { nombre: 'juan', email: 'juan@mail.com', id: 123 }.to_json)
+class MockeadorEndpoints
+  def mockear_endpoint(endpoint, status, body)
+    WebMock.stub_request(:post, "http://webapp:3000#{endpoint}")
+           .with(headers: { 'Content-Type' => 'application/json' })
+           .to_return(status: status, body: body.to_json)
   end
 end
