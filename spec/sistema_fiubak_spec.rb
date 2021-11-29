@@ -1,4 +1,5 @@
 require './app/sistema_fiubak'
+require './app/datos_registro'
 require './app/respuestas/respuesta_registro'
 require 'spec_helper'
 require 'web_mock'
@@ -7,6 +8,7 @@ require 'byebug'
 
 describe 'SistemaFiubak' do
   let(:sistema_fiubak) { SistemaFiubak.new }
+  let(:datos_registro) { DatosRegistro.new('juan', 'juan@mail.com', 123) }
 
   it 'deberia hacer post a usuarios' do
     body = {
@@ -17,7 +19,7 @@ describe 'SistemaFiubak' do
 
     MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201, body)
 
-    res = sistema_fiubak.registrar('juan', 'juan@mail.com', 123)
+    res = sistema_fiubak.registrar(datos_registro)
     esperado = RespuestaRegistro.new('juan', 'juan@mail.com', 123)
 
     expect(res.nombre).to eq esperado.nombre
@@ -33,7 +35,7 @@ describe 'SistemaFiubak' do
     MockeadorEndpoints.new.mockear_endpoint('/usuarios', 400, body)
 
     expect do
-      sistema_fiubak.registrar('juan', 'juan@mail.com', 123)
+      sistema_fiubak.registrar(datos_registro)
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: Ya estas registrado')))
   end
 end
