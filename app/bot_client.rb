@@ -39,7 +39,7 @@ class BotClient
   end
 
   def handle_message(message, bot)
-    @logger.debug "From: @#{message.from.username}, message: #{message.inspect}"
+    @logger.info "From: @#{message.from.username}, message: #{message.inspect}"
 
     Routes.new.handle(bot, message)
   rescue StandardError => e
