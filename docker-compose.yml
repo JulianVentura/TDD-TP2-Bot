@@ -12,9 +12,9 @@ services:
         - .:/app
     environment:
         RACK_ENV: "development"
-#    networks:
-#      - my-net
+    networks:
+      - my-net
 
-#networks:
-#  my-net:
-#    name: my-net
+networks:
+  my-net:
+    name: my-net
