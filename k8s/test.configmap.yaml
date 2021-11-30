@@ -4,3 +4,4 @@ metadata:
   name: botconfig
 data:
   LOG_LEVEL: "debug"
+  URL_BASE : "https://moscu-api-test.herokuapp.com"

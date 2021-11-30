@@ -4,7 +4,7 @@ require './app/error_api'
 class SistemaFiubak
   def initialize
     @servicio = Faraday.new(
-      url: 'http://webapp:3000',
+      url: ENV['URL_BASE'] || 'http://localhost:3000',
       headers: { 'Content-Type' => 'application/json' }
     )
   end
