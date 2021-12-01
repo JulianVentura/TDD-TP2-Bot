@@ -17,5 +17,9 @@ class RespuestaAuto
       (other.estado == @estado))
   end
 
+  def esta_cotizado?
+    false
+  end
+
   attr_reader :patente, :modelo, :kilometros, :anio, :id_prop, :estado
 end
