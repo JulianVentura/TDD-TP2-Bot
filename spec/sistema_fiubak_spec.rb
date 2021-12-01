@@ -48,7 +48,7 @@ describe 'SistemaFiubak' do
       modelo: 'Fiat Uno',
       kilometros: 10_000,
       anio: 1990,
-      id_prop: 1234, # TODO: ver si se llama asi
+      id_prop: 1234,
       estado: 'En revision'
     }
 

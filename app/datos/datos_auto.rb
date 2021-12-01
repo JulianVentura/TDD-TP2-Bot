@@ -7,5 +7,13 @@ class DatosAuto
     @id_prop = id_prop
   end
 
+  def ==(other)
+    ((other.patente == @patente) &&
+      (other.modelo == @modelo) &&
+      (other.kilometros == @kilometros) &&
+      (other.anio == @anio) &&
+      (other.id_prop == @id_prop))
+  end
+
   attr_reader :patente, :modelo, :kilometros, :anio, :id_prop
 end
