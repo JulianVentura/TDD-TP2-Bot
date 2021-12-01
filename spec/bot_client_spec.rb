@@ -159,4 +159,26 @@ describe 'BotClient' do
 
     app.run_once
   end
+
+  it 'deberia responder a "/ingresar_auto Fiat Uno,ABC123,10000,1990" exitosamente' do
+    token = 'fake_token'
+
+    body = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'En revision'
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
+
+    when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
+    then_i_get_text(token, 'Auto con patente ABC123 ingresado al sistema')
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
 end
