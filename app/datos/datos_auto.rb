@@ -1,5 +1,5 @@
 class DatosAuto
-  def initialize(patente, modelo, kilometros, anio, id_prop)
+  def initialize(modelo, patente, kilometros, anio, id_prop)
     @patente = patente
     @modelo = modelo
     @kilometros = kilometros

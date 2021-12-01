@@ -11,7 +11,7 @@ require 'byebug'
 describe 'SistemaFiubak' do
   let(:sistema_fiubak) { SistemaFiubak.new }
   let(:datos_registro) { DatosRegistro.new('juan', 'juan@mail.com', 123) }
-  let(:datos_auto) { DatosAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234) }
+  let(:datos_auto) { DatosAuto.new('Fiat Uno', 'ABC123', 10_000, 1990, 1234) }
 
   it 'deberia hacer post a usuarios' do
     body = {
