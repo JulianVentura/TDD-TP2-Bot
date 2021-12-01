@@ -1,8 +1,8 @@
 require "#{File.dirname(__FILE__)}/../lib/routing"
 require "#{File.dirname(__FILE__)}/../lib/version"
 require_relative './sistema_fiubak'
-require_relative './error_api'
-require_relative './error_parseo'
+require_relative './errores/error_api'
+require_relative './errores/error_parseo'
 require_relative './parseador'
 
 class Routes

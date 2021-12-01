@@ -1,5 +1,5 @@
-require './app/datos_registro'
-require './app/error_parseo'
+require './app/datos/datos_registro'
+require './app/errores/error_parseo'
 
 class Parseador
   def parsear_registro(argumentos, id)

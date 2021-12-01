@@ -1,5 +1,5 @@
 require_relative './respuestas/respuesta_registro'
-require './app/error_api'
+require './app/errores/error_api'
 
 class SistemaFiubak
   def initialize

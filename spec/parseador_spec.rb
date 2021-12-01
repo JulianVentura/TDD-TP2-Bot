@@ -1,6 +1,6 @@
 require 'spec_helper'
 require './app/parseador'
-require './app/error_parseo'
+require './app/errores/error_parseo'
 
 describe 'Parseador' do
   it 'parsear_registro devuelve un RegistroDatos con los datos parseados' do
