@@ -6,7 +6,6 @@ require './app/respuestas/respuesta_auto'
 require 'spec_helper'
 require 'web_mock'
 require './app/errores/error_api'
-require 'byebug'
 
 describe 'SistemaFiubak' do
   let(:sistema_fiubak) { SistemaFiubak.new }
@@ -68,5 +67,24 @@ describe 'SistemaFiubak' do
     expect do
       sistema_fiubak.ingresar_auto(datos_auto)
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: no se ingreso bien el auto')))
+  end
+
+  it 'deberia devolver una lista con mis autos' do
+    auto = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'En revision'
+    }
+
+    body = [auto]
+
+    MockeadorEndpoints.new.mockear_get('/autos/1234', 200, body)
+
+    res = sistema_fiubak.consultar_mis_autos(1234)
+    esperado = [RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision')]
+    expect(res).to eq(esperado)
   end
 end
