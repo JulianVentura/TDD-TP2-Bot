@@ -30,3 +30,5 @@ RSpec/ExampleLength:
   Max: 15
 Layout/EndOfLine:
   Enabled: false
+Metrics/ParameterLists:
+  Max: 7

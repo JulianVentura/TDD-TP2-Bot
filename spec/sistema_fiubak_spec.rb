@@ -88,6 +88,26 @@ describe 'SistemaFiubak' do
     expect(res).to eq(esperado)
   end
 
+  xit 'deberia devolver una lista con mis autos cotizados' do
+    auto = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'Cotizado',
+      precio: 5000
+    }
+
+    body = [auto]
+
+    MockeadorEndpoints.new.mockear_get('/autos/1234', 200, body)
+
+    res = sistema_fiubak.consultar_mis_autos(1234)
+    esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Cotizado', 5000)]
+    expect(res).to eq(esperado)
+  end
+
   it 'deberia fallar si llega un error en listar mis autos' do
     body = {
       error: 'Error: ocurrio un error'
