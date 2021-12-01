@@ -200,4 +200,17 @@ describe 'BotClient' do
 
     app.run_once
   end
+
+  it 'deberia responder a "/ingresar_auto Fiat Uno" con mensaje de ayuda' do
+    token = 'fake_token'
+
+    mensaje_error = 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>'
+
+    when_i_send_text(token, '/ingresar_auto Fiat Uno')
+    then_i_get_text(token, mensaje_error)
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
 end
