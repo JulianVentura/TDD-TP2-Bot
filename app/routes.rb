@@ -25,10 +25,13 @@ class Routes
   end
 
   on_message_pattern %r{/ingresar_auto( (?<argumentos>.*)|$)} do |bot, message, args|
-    datos_auto = Parseador.new.parsear_auto(args['argumentos'], message.chat.id)
+    datos_auto = Parseador.new.parsear_ingresar_auto(args['argumentos'], message.chat.id)
 
     respuesta = SistemaFiubak.new.ingresar_auto(datos_auto)
+
     bot.api.send_message(chat_id: message.chat.id, text: "Auto con patente #{respuesta.patente} ingresado al sistema")
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
   on_message '/version' do |bot, message|

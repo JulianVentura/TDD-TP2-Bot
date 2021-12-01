@@ -181,4 +181,23 @@ describe 'BotClient' do
 
     app.run_once
   end
+
+  it 'deberia responder a "/ingresar_auto Fiat Uno,ABC123,10000,1990" con error' do
+    token = 'fake_token'
+
+    mensaje_error = 'Error: Auto ya registrado'
+
+    body = {
+      error: mensaje_error
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/autos', 400, body)
+
+    when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
+    then_i_get_text(token, mensaje_error)
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
 end
