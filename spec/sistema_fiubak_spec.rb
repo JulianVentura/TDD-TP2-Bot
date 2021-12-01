@@ -1,14 +1,17 @@
 require './app/sistema_fiubak'
-require './app/datos_registro'
+require './app/datos/datos_registro'
 require './app/respuestas/respuesta_registro'
+require './app/datos/datos_auto'
+require './app/respuestas/respuesta_auto'
 require 'spec_helper'
 require 'web_mock'
-require './app/error_api'
+require './app/errores/error_api'
 require 'byebug'
 
 describe 'SistemaFiubak' do
   let(:sistema_fiubak) { SistemaFiubak.new }
   let(:datos_registro) { DatosRegistro.new('juan', 'juan@mail.com', 123) }
+  let(:datos_auto) { DatosAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234) }
 
   it 'deberia hacer post a usuarios' do
     body = {
@@ -37,5 +40,22 @@ describe 'SistemaFiubak' do
     expect do
       sistema_fiubak.registrar(datos_registro)
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: Ya estas registrado')))
+  end
+
+  it 'deberia ingresar un auto' do
+    body = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id: 1234, # TODO: ver si se llama asi
+      estado: 'En revision'
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
+
+    res = sistema_fiubak.ingresar_auto(datos_auto)
+    esperado = RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision')
+    expect(res).to eq(esperado)
   end
 end
