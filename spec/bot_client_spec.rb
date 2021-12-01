@@ -289,7 +289,7 @@ describe 'BotClient' do
       MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
 
       when_i_send_text(token, '/consultar_mis_autos')
-      then_i_get_text(token, '#1 AB123CD, Cotizado, 5000\n#2 ABC123, En revision')
+      then_i_get_text(token, "#1 AB123CD, Cotizado, 5000\n#2 ABC123, En revision")
 
       app = BotClient.new(token)
 

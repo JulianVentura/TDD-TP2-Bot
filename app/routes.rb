@@ -44,7 +44,7 @@ class Routes
 
     respuesta.each_with_index do |auto, index|
       mensaje += "##{1 + index} #{auto.patente}, #{auto.estado}" + (auto.esta_cotizado? ? ", #{auto.precio}" : '')
-      mensaje += '\n' unless index == respuesta.size - 1
+      mensaje += "\n" unless index == respuesta.size - 1
     end
 
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
