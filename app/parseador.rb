@@ -19,6 +19,6 @@ class Parseador
 
     raise ErrorParseo if argumentos.size != 4
 
-    DatosAuto.new(argumentos[0].strip, argumentos[1].strip, argumentos[2], argumentos[3], id)
+    DatosAuto.new(argumentos[0].strip, argumentos[1].strip, argumentos[2].to_i, argumentos[3].to_i, id)
   end
 end

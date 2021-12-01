@@ -51,9 +51,9 @@ describe 'Parseador' do
   it 'parsear_ingresar_auto devuelve un DatosAuto con los datos parseados' do
     patente = 'ABC123'
     modelo = 'Fiat Uno'
-    kilometros = '500'
-    anio = '1990'
-    id = '123'
+    kilometros = 500
+    anio = 1990
+    id = 123
     argumentos = "#{patente},#{modelo},#{kilometros},#{anio}"
     esperado = DatosAuto.new(patente, modelo, kilometros, anio, id)
 
@@ -64,8 +64,31 @@ describe 'Parseador' do
 
   it 'parsear_ingresar_auto levanta ErrorParseo cuando hay menos de cuatro argumentos' do
     patente = 'ABC123'
-    id = '123'
+    id = 123
     argumentos = patente.to_s
+
+    expect  do
+      Parseador.new.parsear_ingresar_auto(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
+
+  it 'parsear_ingresar_auto levanta ErrorParseo cuando hay mas de cuatro argumentos' do
+    patente = 'ABC123'
+    modelo = 'Fiat Uno'
+    kilometros = 500
+    anio = 1990
+    precio = '25000'
+    id = 5
+    argumentos = "#{patente},#{modelo},#{kilometros},#{anio},#{precio}"
+
+    expect  do
+      Parseador.new.parsear_registro(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
+
+  it 'parsear_ingresar_auto levanta ErrorParseo cuando hay argumentos es nil' do
+    id = 5
+    argumentos = nil
 
     expect  do
       Parseador.new.parsear_ingresar_auto(argumentos, id)
