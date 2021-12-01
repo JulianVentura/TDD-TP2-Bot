@@ -43,7 +43,7 @@ class Routes
     # TODO: ver si cambiamos esto, se esta mandando un unico mensaje con todos los autos
 
     respuesta.each_with_index do |auto, index|
-      mensaje += "##{1 + index} #{auto.patente}, #{auto.estado}"
+      mensaje += "##{1 + index} #{auto.patente}, #{auto.estado}" + (auto.esta_cotizado? ? ", #{auto.precio}" : '')
       mensaje += '\n' unless index == respuesta.size - 1
     end
 
