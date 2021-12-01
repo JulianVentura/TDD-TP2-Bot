@@ -88,7 +88,7 @@ describe 'SistemaFiubak' do
     expect(res).to eq(esperado)
   end
 
-  xit 'deberia devolver una lista con mis autos cotizados' do
+  it 'deberia devolver una lista con mis autos cotizados' do
     auto = {
       patente: 'ABC123',
       modelo: 'Fiat Uno',

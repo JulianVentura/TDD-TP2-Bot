@@ -1,5 +1,6 @@
 require_relative './respuestas/respuesta_registro'
 require_relative './respuestas/respuesta_auto'
+require_relative './respuestas/fabrica_respuesta_auto'
 require './app/errores/error_api'
 
 class SistemaFiubak
@@ -47,7 +48,7 @@ class SistemaFiubak
     autos = []
 
     respuesta_json.each do |auto|
-      autos.append(RespuestaAuto.new(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado']))
+      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['precio']))
     end
 
     autos
