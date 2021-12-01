@@ -1,4 +1,5 @@
 require './app/datos/datos_registro'
+require './app/datos/datos_auto'
 require './app/errores/error_parseo'
 
 class Parseador
