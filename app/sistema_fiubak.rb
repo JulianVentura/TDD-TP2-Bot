@@ -38,7 +38,7 @@ class SistemaFiubak
   end
 
   def consultar_mis_autos(id_prop) # rubocop:disable Metrics/AbcSize
-    endpoint = "/autos/#{id_prop}"
+    endpoint = "/usuarios/#{id_prop}/autos"
     respuesta = @servicio.get(endpoint)
 
     respuesta_json = JSON.parse(respuesta.body)

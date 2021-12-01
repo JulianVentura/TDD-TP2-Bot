@@ -81,7 +81,7 @@ describe 'SistemaFiubak' do
 
     body = [auto]
 
-    MockeadorEndpoints.new.mockear_get('/autos/1234', 200, body)
+    MockeadorEndpoints.new.mockear_get('/usuarios/1234/autos', 200, body)
 
     res = sistema_fiubak.consultar_mis_autos(1234)
     esperado = [RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision')]
@@ -101,7 +101,7 @@ describe 'SistemaFiubak' do
 
     body = [auto]
 
-    MockeadorEndpoints.new.mockear_get('/autos/1234', 200, body)
+    MockeadorEndpoints.new.mockear_get('/usuarios/1234/autos', 200, body)
 
     res = sistema_fiubak.consultar_mis_autos(1234)
     esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Cotizado', 5000)]
@@ -113,7 +113,7 @@ describe 'SistemaFiubak' do
       error: 'Error: ocurrio un error'
     }
 
-    MockeadorEndpoints.new.mockear_get('/autos/1234', 400, body)
+    MockeadorEndpoints.new.mockear_get('/usuarios/1234/autos', 400, body)
 
     expect do
       sistema_fiubak.consultar_mis_autos(1234)

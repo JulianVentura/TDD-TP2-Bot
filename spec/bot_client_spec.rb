@@ -230,7 +230,7 @@ describe 'BotClient' do
 
     body = [auto]
 
-    MockeadorEndpoints.new.mockear_get("/autos/#{CHAT_ID}", 200, body)
+    MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
 
     when_i_send_text(token, '/consultar_mis_autos')
     then_i_get_text(token, '#1 ABC123, En revision')
@@ -255,7 +255,7 @@ describe 'BotClient' do
 
     body = [auto]
 
-    MockeadorEndpoints.new.mockear_get("/autos/#{CHAT_ID}", 200, body)
+    MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
 
     when_i_send_text(token, '/consultar_mis_autos')
     then_i_get_text(token, '#1 ABC123, Cotizado, 5000')
