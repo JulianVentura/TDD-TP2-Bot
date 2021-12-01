@@ -110,158 +110,190 @@ describe 'BotClient' do
 
     app.run_once
   end
+  context 'when /registrar' do
+    it 'deberia responder a "/registrar juan, juan@test.com" exitosamente' do
+      token = 'fake_token'
 
-  it 'deberia responder a "/registrar juan, juan@test.com" exitosamente' do
-    token = 'fake_token'
+      body = {
+        nombre: 'juan',
+        email: 'juan@mail.com',
+        id: 123
+      }
 
-    body = {
-      nombre: 'juan',
-      email: 'juan@mail.com',
-      id: 123
-    }
+      MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201, body)
 
-    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201, body)
+      when_i_send_text(token, '/registrar juan, juan@test.com')
+      then_i_get_text(token, 'Bienvenido juan')
 
-    when_i_send_text(token, '/registrar juan, juan@test.com')
-    then_i_get_text(token, 'Bienvenido juan')
+      app = BotClient.new(token)
 
-    app = BotClient.new(token)
+      app.run_once
+    end
 
-    app.run_once
+    it 'deberia responder a "/registrar juan, juan@test.com" con error' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: Ya estas registrado'
+
+      body = {
+        error: mensaje_error
+      }
+
+      MockeadorEndpoints.new.mockear_endpoint('/usuarios', 400, body)
+
+      when_i_send_text(token, '/registrar juan, juan@test.com')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+
+    it 'deberia responder a "/registrar juan" con mensaje de ayuda' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: El uso del comando es /registrar <nombre>,<email>'
+
+      when_i_send_text(token, '/registrar juan')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 
-  it 'deberia responder a "/registrar juan, juan@test.com" con error' do
-    token = 'fake_token'
+  context 'when /ingresar_auto' do
+    it 'deberia responder a "/ingresar_auto Fiat Uno,ABC123,10000,1990" exitosamente' do
+      token = 'fake_token'
 
-    mensaje_error = 'Error: Ya estas registrado'
+      body = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'En revision'
+      }
 
-    body = {
-      error: mensaje_error
-    }
+      MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
 
-    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 400, body)
+      when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
+      then_i_get_text(token, 'Auto con patente ABC123 ingresado al sistema')
 
-    when_i_send_text(token, '/registrar juan, juan@test.com')
-    then_i_get_text(token, mensaje_error)
+      app = BotClient.new(token)
 
-    app = BotClient.new(token)
+      app.run_once
+    end
 
-    app.run_once
+    it 'deberia responder a "/ingresar_auto Fiat Uno,ABC123,10000,1990" con error' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: Auto ya registrado'
+
+      body = {
+        error: mensaje_error
+      }
+
+      MockeadorEndpoints.new.mockear_endpoint('/autos', 400, body)
+
+      when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+
+    it 'deberia responder a "/ingresar_auto Fiat Uno" con mensaje de ayuda' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>'
+
+      when_i_send_text(token, '/ingresar_auto Fiat Uno')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 
-  it 'deberia responder a "/registrar juan" con mensaje de ayuda' do
-    token = 'fake_token'
+  context 'when /consultar_mis_autos' do
+    let(:auto) do
+      {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'En revision'
+      }
+    end
 
-    mensaje_error = 'Error: El uso del comando es /registrar <nombre>,<email>'
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
 
-    when_i_send_text(token, '/registrar juan')
-    then_i_get_text(token, mensaje_error)
+      body = [auto]
 
-    app = BotClient.new(token)
+      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
 
-    app.run_once
-  end
+      when_i_send_text(token, '/consultar_mis_autos')
+      then_i_get_text(token, '#1 ABC123, En revision')
 
-  it 'deberia responder a "/ingresar_auto Fiat Uno,ABC123,10000,1990" exitosamente' do
-    token = 'fake_token'
+      app = BotClient.new(token)
 
-    body = {
-      patente: 'ABC123',
-      modelo: 'Fiat Uno',
-      kilometros: 10_000,
-      anio: 1990,
-      id_prop: 1234,
-      estado: 'En revision'
-    }
+      app.run_once
+    end
 
-    MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
+    it 'deberia responder con un auto cotizado' do
+      token = 'fake_token'
 
-    when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
-    then_i_get_text(token, 'Auto con patente ABC123 ingresado al sistema')
+      auto1 = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Cotizado',
+        precio: 5000
+      }
 
-    app = BotClient.new(token)
+      body = [auto1]
 
-    app.run_once
-  end
+      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
 
-  it 'deberia responder a "/ingresar_auto Fiat Uno,ABC123,10000,1990" con error' do
-    token = 'fake_token'
+      when_i_send_text(token, '/consultar_mis_autos')
+      then_i_get_text(token, '#1 ABC123, Cotizado, 5000')
 
-    mensaje_error = 'Error: Auto ya registrado'
+      app = BotClient.new(token)
 
-    body = {
-      error: mensaje_error
-    }
+      app.run_once
+    end
 
-    MockeadorEndpoints.new.mockear_endpoint('/autos', 400, body)
+    it 'deberia responder con varios autos' do
+      token = 'fake_token'
 
-    when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
-    then_i_get_text(token, mensaje_error)
+      auto1 = {
+        patente: 'AB123CD',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Cotizado',
+        precio: 5000
+      }
 
-    app = BotClient.new(token)
+      body = [auto1, auto]
 
-    app.run_once
-  end
+      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
 
-  it 'deberia responder a "/ingresar_auto Fiat Uno" con mensaje de ayuda' do
-    token = 'fake_token'
+      when_i_send_text(token, '/consultar_mis_autos')
+      then_i_get_text(token, '#1 AB123CD, Cotizado, 5000\n#2 ABC123, En revision')
 
-    mensaje_error = 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>'
+      app = BotClient.new(token)
 
-    when_i_send_text(token, '/ingresar_auto Fiat Uno')
-    then_i_get_text(token, mensaje_error)
-
-    app = BotClient.new(token)
-
-    app.run_once
-  end
-
-  it 'deberia responder a "/consultar_mis_autos" exitosamente' do
-    token = 'fake_token'
-
-    auto = {
-      patente: 'ABC123',
-      modelo: 'Fiat Uno',
-      kilometros: 10_000,
-      anio: 1990,
-      id_prop: 1234,
-      estado: 'En revision'
-    }
-
-    body = [auto]
-
-    MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
-
-    when_i_send_text(token, '/consultar_mis_autos')
-    then_i_get_text(token, '#1 ABC123, En revision')
-
-    app = BotClient.new(token)
-
-    app.run_once
-  end
-
-  it 'deberia responder a "/consultar_mis_autos" con un auto cotizado' do
-    token = 'fake_token'
-
-    auto = {
-      patente: 'ABC123',
-      modelo: 'Fiat Uno',
-      kilometros: 10_000,
-      anio: 1990,
-      id_prop: 1234,
-      estado: 'Cotizado',
-      precio: 5000
-    }
-
-    body = [auto]
-
-    MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
-
-    when_i_send_text(token, '/consultar_mis_autos')
-    then_i_get_text(token, '#1 ABC123, Cotizado, 5000')
-
-    app = BotClient.new(token)
-
-    app.run_once
+      app.run_once
+    end
   end
 end
