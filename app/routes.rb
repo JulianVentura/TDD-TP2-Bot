@@ -36,6 +36,22 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>')
   end
 
+  on_message '/consultar_mis_autos' do |bot, message|
+    respuesta = SistemaFiubak.new.consultar_mis_autos(message.chat.id)
+    mensaje = ''
+
+    # TODO: ver si cambiamos esto, se esta mandando un unico mensaje con todos los autos
+
+    respuesta.each_with_index do |auto, index|
+      mensaje += "##{1 + index} #{auto.patente}, #{auto.estado}"
+      mensaje += '\n' unless index == respuesta.size - 1
+    end
+
+    bot.api.send_message(chat_id: message.chat.id, text: mensaje)
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end

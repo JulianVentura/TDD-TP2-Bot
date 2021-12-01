@@ -5,11 +5,13 @@ require 'web_mock'
 
 require "#{File.dirname(__FILE__)}/../app/bot_client"
 
+CHAT_ID = 141_733_544
+
 def when_i_send_text(token, message_text)
   body = { "ok": true, "result": [{ "update_id": 693_981_718,
                                     "message": { "message_id": 11,
-                                                 "from": { "id": 141_733_544, "is_bot": false, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "language_code": 'en' },
-                                                 "chat": { "id": 141_733_544, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
+                                                 "from": { "id": CHAT_ID, "is_bot": false, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "language_code": 'en' },
+                                                 "chat": { "id": CHAT_ID, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
                                                  "date": 1_557_782_998, "text": message_text,
                                                  "entities": [{ "offset": 0, "length": 6, "type": 'bot_command' }] } }] }
 
@@ -21,11 +23,11 @@ def when_i_send_keyboard_updates(token, message_text, inline_selection)
   body = {
     "ok": true, "result": [{
       "update_id": 866_033_907,
-      "callback_query": { "id": '608740940475689651', "from": { "id": 141_733_544, "is_bot": false, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "language_code": 'en' },
+      "callback_query": { "id": '608740940475689651', "from": { "id": CHAT_ID, "is_bot": false, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "language_code": 'en' },
                           "message": {
                             "message_id": 626,
                             "from": { "id": 715_612_264, "is_bot": true, "first_name": 'fiuba-memo2-prueba', "username": 'fiuba_memo2_bot' },
-                            "chat": { "id": 141_733_544, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
+                            "chat": { "id": CHAT_ID, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
                             "date": 1_595_282_006,
                             "text": message_text,
                             "reply_markup": {
@@ -49,7 +51,7 @@ def then_i_get_text(token, message_text)
   body = { "ok": true,
            "result": { "message_id": 12,
                        "from": { "id": 715_612_264, "is_bot": true, "first_name": 'fiuba-memo2-prueba', "username": 'fiuba_memo2_bot' },
-                       "chat": { "id": 141_733_544, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
+                       "chat": { "id": CHAT_ID, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
                        "date": 1_557_782_999, "text": message_text } }
 
   stub_request(:post, "https://api.telegram.org/bot#{token}/sendMessage")
@@ -63,7 +65,7 @@ def then_i_get_keyboard_message(token, message_text)
   body = { "ok": true,
            "result": { "message_id": 12,
                        "from": { "id": 715_612_264, "is_bot": true, "first_name": 'fiuba-memo2-prueba', "username": 'fiuba_memo2_bot' },
-                       "chat": { "id": 141_733_544, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
+                       "chat": { "id": CHAT_ID, "first_name": 'Emilio', "last_name": 'Gutter', "username": 'egutter', "type": 'private' },
                        "date": 1_557_782_999, "text": message_text } }
 
   stub_request(:post, "https://api.telegram.org/bot#{token}/sendMessage")
@@ -208,6 +210,30 @@ describe 'BotClient' do
 
     when_i_send_text(token, '/ingresar_auto Fiat Uno')
     then_i_get_text(token, mensaje_error)
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
+
+  it 'deberia responder a "/consultar_mis_autos" exitosamente' do
+    token = 'fake_token'
+
+    auto = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'En revision'
+    }
+
+    body = [auto]
+
+    MockeadorEndpoints.new.mockear_get("/autos/#{CHAT_ID}", 200, body)
+
+    when_i_send_text(token, '/consultar_mis_autos')
+    then_i_get_text(token, '#1 ABC123, En revision')
 
     app = BotClient.new(token)
 
