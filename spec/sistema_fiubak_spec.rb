@@ -48,7 +48,7 @@ describe 'SistemaFiubak' do
       modelo: 'Fiat Uno',
       kilometros: 10_000,
       anio: 1990,
-      id: 1234, # TODO: ver si se llama asi
+      id_prop: 1234, # TODO: ver si se llama asi
       estado: 'En revision'
     }
 
@@ -57,5 +57,16 @@ describe 'SistemaFiubak' do
     res = sistema_fiubak.ingresar_auto(datos_auto)
     esperado = RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision')
     expect(res).to eq(esperado)
+  end
+
+  it 'deberia fallar si llega un error en ingresar auto' do
+    body = {
+      error: 'Error: no se ingreso bien el auto'
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/autos', 400, body)
+    expect do
+      sistema_fiubak.ingresar_auto(datos_auto)
+    end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: no se ingreso bien el auto')))
   end
 end

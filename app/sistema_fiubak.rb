@@ -31,6 +31,8 @@ class SistemaFiubak
 
     respuesta_json = JSON.parse(respuesta.body)
 
-    RespuestaAuto.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'], respuesta_json['anio'], respuesta_json['id'], respuesta_json['estado'])
+    raise ErrorApi, respuesta_json['error'] unless respuesta.status == 201
+
+    RespuestaAuto.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'], respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'])
   end
 end
