@@ -1,9 +1,10 @@
 require 'spec_helper'
 require './app/parseador'
 require './app/errores/error_parseo'
+require './app/datos/datos_auto'
 
 describe 'Parseador' do
-  it 'parsear_registro devuelve un RegistroDatos con los datos parseados' do
+  it 'parsear_registro devuelve un DatosRegistro con los datos parseados' do
     nombre = 'juan'
     email = 'juan@mail.com'
     id = 5
@@ -45,5 +46,19 @@ describe 'Parseador' do
     expect  do
       Parseador.new.parsear_registro(argumentos, id)
     end.to raise_error(ErrorParseo)
+  end
+
+  it 'parsear_ingresar_auto devuelve un DatosAuto con los datos parseados' do
+    patente = 'ABC123'
+    modelo = 'Fiat Uno'
+    kilometros = '500'
+    anio = '1990'
+    id = '123'
+    argumentos = "#{patente},#{modelo},#{kilometros},#{anio}"
+    esperado = DatosAuto.new(patente, modelo, kilometros, anio, id)
+
+    datos = Parseador.new.parsear_ingresar_auto(argumentos, id)
+
+    expect(datos).to eq(esperado)
   end
 end
