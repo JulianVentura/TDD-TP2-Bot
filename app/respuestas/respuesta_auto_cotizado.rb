@@ -1,22 +1,11 @@
-class RespuestaAutoCotizado
+class RespuestaAutoCotizado < RespuestaAuto
   def initialize(patente, modelo, kilometros, anio, id_prop, estado, precio) # rubocop:disable Metrics/ParameterLists
-    @patente = patente
-    @modelo = modelo
-    @kilometros = kilometros
-    @anio = anio
-    @id_prop = id_prop
-    @estado = estado
     @precio = precio
+    super(patente, modelo, kilometros, anio, id_prop, estado)
   end
 
   def ==(other)
-    ((other.patente == @patente) &&
-      (other.modelo == @modelo) &&
-      (other.kilometros == @kilometros) &&
-      (other.anio == @anio) &&
-      (other.id_prop == @id_prop) &&
-      (other.estado == @estado) &&
-      (other.precio == @precio))
+    other.class == self.class && super(other) && (other.precio == @precio)
   end
 
   attr_reader :patente, :modelo, :kilometros, :anio, :id_prop, :estado, :precio
