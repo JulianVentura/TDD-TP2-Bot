@@ -13,7 +13,11 @@ class Parseador
   end
 
   def parsear_ingresar_auto(argumentos, id)
+    raise ErrorParseo if argumentos.nil?
+
     argumentos = argumentos.split(',')
+
+    raise ErrorParseo if argumentos.size != 4
 
     DatosAuto.new(argumentos[0].strip, argumentos[1].strip, argumentos[2], argumentos[3], id)
   end

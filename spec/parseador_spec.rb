@@ -61,4 +61,14 @@ describe 'Parseador' do
 
     expect(datos).to eq(esperado)
   end
+
+  it 'parsear_ingresar_auto levanta ErrorParseo cuando hay menos de cuatro argumentos' do
+    patente = 'ABC123'
+    id = '123'
+    argumentos = patente.to_s
+
+    expect  do
+      Parseador.new.parsear_ingresar_auto(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end
