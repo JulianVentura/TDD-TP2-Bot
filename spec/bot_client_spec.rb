@@ -295,5 +295,20 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'deberia responder con "No tenes autos registrados"' do
+      token = 'fake_token'
+
+      body = []
+
+      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
+
+      when_i_send_text(token, '/consultar_mis_autos')
+      then_i_get_text(token, 'No tenes autos registrados')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end
