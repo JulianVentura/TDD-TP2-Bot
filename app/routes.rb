@@ -53,6 +53,14 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
+  on_message_pattern %r{/vender_a_fiubak( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_auto = Parseador.new.parsear_ingresar_auto(args['argumentos'], message.chat.id) # TODO: cambiar nombre a la funcion, es lo mismo para este caso
+
+    respuesta = SistemaFiubak.new.vender_a_fiubak(datos_auto)
+
+    bot.api.send_message(chat_id: message.chat.id, text: "Se ha registrado la venta de tu vehiculo de patente #{respuesta.patente}")
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end

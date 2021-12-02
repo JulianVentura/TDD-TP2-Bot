@@ -56,7 +56,9 @@ class SistemaFiubak
 
   def vender_a_fiubak(datos_auto) # rubocop:disable Metrics/AbcSize
     endpoint = "/autos/#{datos_auto.patente}/vender_a_fiubak"
-    respuesta = @servicio.post(endpoint)
+    respuesta = @servicio.post(endpoint) do |req|
+      req.body = { id: datos_auto.id_prop }.to_json
+    end
 
     respuesta_json = JSON.parse(respuesta.body)
 

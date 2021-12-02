@@ -311,4 +311,29 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  context 'when /autos/:patente/vender_a_fiubak' do
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      body = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Esperando entrega',
+        precio: 15_000
+      }
+
+      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
+
+      when_i_send_text(token, '/vender_a_fiubak ABC123')
+      then_i_get_text(token, 'Se ha registrado la venta de tu vehiculo de patente ABC123')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
 end
