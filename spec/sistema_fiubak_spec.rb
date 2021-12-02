@@ -48,7 +48,8 @@ describe 'SistemaFiubak' do
       kilometros: 10_000,
       anio: 1990,
       id_prop: 1234,
-      estado: 'En revision'
+      estado: 'En revision',
+      precio: 0
     }
 
     MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
@@ -76,7 +77,8 @@ describe 'SistemaFiubak' do
       kilometros: 10_000,
       anio: 1990,
       id_prop: 1234,
-      estado: 'En revision'
+      estado: 'En revision',
+      precio: 0
     }
 
     body = [auto]
@@ -118,5 +120,23 @@ describe 'SistemaFiubak' do
     expect do
       sistema_fiubak.consultar_mis_autos(1234)
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+  end
+
+  it 'deberia vender un auto a fiubak' do
+    body = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'Esperando entrega',
+      precio: 15_000
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 200, body)
+
+    res = sistema_fiubak.vender_a_fiubak(datos_auto)
+    esperado = RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Esperando entrega', 15_000)
+    expect(res).to eq(esperado)
   end
 end
