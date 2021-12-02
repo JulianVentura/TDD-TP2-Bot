@@ -54,11 +54,13 @@ class SistemaFiubak
     autos
   end
 
-  def vender_a_fiubak(datos_auto)
+  def vender_a_fiubak(datos_auto) # rubocop:disable Metrics/AbcSize
     endpoint = "/autos/#{datos_auto.patente}/vender_a_fiubak"
     respuesta = @servicio.post(endpoint)
 
     respuesta_json = JSON.parse(respuesta.body)
+
+    raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
     RespuestaAutoCotizado.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
                               respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['precio'])

@@ -139,4 +139,16 @@ describe 'SistemaFiubak' do
     esperado = RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Esperando entrega', 15_000)
     expect(res).to eq(esperado)
   end
+
+  it 'deberia fallar si llega un error en vender un auto a fiubak' do
+    body = {
+      error: 'Error: ocurrio un error'
+    }
+
+    MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 400, body)
+
+    expect do
+      sistema_fiubak.vender_a_fiubak(datos_auto)
+    end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+  end
 end
