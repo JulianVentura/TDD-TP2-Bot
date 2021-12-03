@@ -2,6 +2,7 @@ require 'spec_helper'
 require './app/parseador'
 require './app/errores/error_parseo'
 require './app/datos/datos_auto'
+require './app/datos/datos_venta_fiubak'
 
 describe 'Parseador' do
   it 'parsear_registro devuelve un DatosRegistro con los datos parseados' do
@@ -93,5 +94,16 @@ describe 'Parseador' do
     expect  do
       Parseador.new.parsear_ingresar_auto(argumentos, id)
     end.to raise_error(ErrorParseo)
+  end
+
+  it 'parsear_vender_a_fiubak devuelve un DatosVentaFiubak con los datos parseados' do
+    patente = 'ABC123'
+    id = 123
+    argumentos = patente.to_s
+    esperado = DatosVentaFiubak.new(patente, id)
+
+    datos = Parseador.new.parsear_vender_a_fiubak(argumentos, id)
+
+    expect(datos).to eq(esperado)
   end
 end

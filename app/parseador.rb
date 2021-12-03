@@ -22,4 +22,10 @@ class Parseador
 
     DatosAuto.new(argumentos[0].strip, argumentos[1].strip, argumentos[2].to_i, argumentos[3].to_i, id)
   end
+
+  def parsear_vender_a_fiubak(argumentos, id)
+    argumentos = argumentos.split(',')
+
+    DatosVentaFiubak.new(argumentos[0].strip, id)
+  end
 end
