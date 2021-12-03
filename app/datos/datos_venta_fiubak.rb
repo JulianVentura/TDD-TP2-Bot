@@ -1,5 +1,5 @@
 class DatosVentaFiubak
-  def initialize(_patente, id_prop)
+  def initialize(patente, id_prop)
     @patente = patente
     @id_prop = id_prop
   end
