@@ -85,4 +85,18 @@ class SistemaFiubak
 
     autos
   end
+
+  def publicar_p2p(datos_auto) # rubocop:disable Metrics/AbcSize
+    endpoint = "/autos/#{datos_auto.patente}/publicar_p2p"
+    respuesta = @servicio.post(endpoint) do |req|
+      req.body = { id_prop: datos_auto.id_prop, precio: datos_auto.precio }.to_json
+    end
+
+    respuesta_json = JSON.parse(respuesta.body)
+
+    raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
+
+    FabricaRespuestaAuto.new.crear(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
+                                   respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'], respuesta_json['precio'])
+  end
 end

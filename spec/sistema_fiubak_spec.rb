@@ -199,7 +199,7 @@ describe 'SistemaFiubak' do
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
   end
 
-  xit 'deberia publicar un auto p2p' do
+  it 'deberia publicar un auto p2p' do
     body = {
       patente: 'ABC123',
       modelo: 'Fiat Uno',
