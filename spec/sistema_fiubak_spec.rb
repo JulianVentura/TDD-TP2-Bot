@@ -56,7 +56,7 @@ describe 'SistemaFiubak' do
     MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
 
     res = sistema_fiubak.ingresar_auto(datos_auto)
-    esperado = RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision')
+    esperado = RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision', false)
     expect(res).to eq(esperado)
   end
 
@@ -88,7 +88,7 @@ describe 'SistemaFiubak' do
     MockeadorEndpoints.new.mockear_get('/usuarios/1234/autos', 200, body)
 
     res = sistema_fiubak.consultar_mis_autos(1234)
-    esperado = [RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision')]
+    esperado = [RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision', false)]
     expect(res).to eq(esperado)
   end
 
@@ -109,7 +109,7 @@ describe 'SistemaFiubak' do
     MockeadorEndpoints.new.mockear_get('/usuarios/1234/autos', 200, body)
 
     res = sistema_fiubak.consultar_mis_autos(1234)
-    esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Cotizado', 5000)]
+    esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Cotizado', false, 5000)]
     expect(res).to eq(esperado)
   end
 
@@ -140,7 +140,7 @@ describe 'SistemaFiubak' do
     MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 200, body)
 
     res = sistema_fiubak.vender_a_fiubak(DatosVentaFiubak.new('ABC123', 1234))
-    esperado = RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Esperando entrega', 15_000)
+    esperado = RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Esperando entrega', false, 15_000)
     expect(res).to eq(esperado)
   end
 
@@ -173,7 +173,7 @@ describe 'SistemaFiubak' do
     MockeadorEndpoints.new.mockear_get('/autos', 200, body)
 
     res = sistema_fiubak.listar_autos
-    esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Publicado', 15_000)]
+    esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Publicado', true, 15_000)]
     expect(res).to eq(esperado)
   end
 

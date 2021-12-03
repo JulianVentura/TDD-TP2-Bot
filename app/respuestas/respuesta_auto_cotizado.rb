@@ -1,7 +1,7 @@
 class RespuestaAutoCotizado < RespuestaAuto
-  def initialize(patente, modelo, kilometros, anio, id_prop, estado, precio)
+  def initialize(patente, modelo, kilometros, anio, id_prop, estado, es_fiubak, precio) # rubocop:disable Metrics/ParameterLists
     @precio = precio
-    super(patente, modelo, kilometros, anio, id_prop, estado)
+    super(patente, modelo, kilometros, anio, id_prop, estado, es_fiubak)
   end
 
   def ==(other)
@@ -12,5 +12,5 @@ class RespuestaAutoCotizado < RespuestaAuto
     true
   end
 
-  attr_reader :patente, :modelo, :kilometros, :anio, :id_prop, :estado, :precio
+  attr_reader :precio
 end

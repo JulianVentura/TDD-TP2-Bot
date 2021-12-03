@@ -34,7 +34,8 @@ class SistemaFiubak
 
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 201
 
-    RespuestaAuto.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'], respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'])
+    RespuestaAuto.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'], respuesta_json['anio'],
+                      respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'])
   end
 
   def consultar_mis_autos(id_prop) # rubocop:disable Metrics/AbcSize
@@ -48,7 +49,7 @@ class SistemaFiubak
     autos = []
 
     respuesta_json.each do |auto|
-      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['precio']))
+      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['es_fiubak'], auto['precio']))
     end
 
     autos
@@ -65,7 +66,7 @@ class SistemaFiubak
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
     RespuestaAutoCotizado.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
-                              respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['precio'])
+                              respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
 
   def listar_autos # rubocop:disable Metrics/AbcSize
@@ -79,7 +80,7 @@ class SistemaFiubak
     autos = []
 
     respuesta_json.each do |auto|
-      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['precio']))
+      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['es_fiubak'], auto['precio']))
     end
 
     autos
