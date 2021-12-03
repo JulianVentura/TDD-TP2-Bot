@@ -120,7 +120,7 @@ describe 'BotClient' do
         id: 123
       }
 
-      MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201, body)
+      MockeadorEndpoints.new.mockear_post('/usuarios', 201, body)
 
       when_i_send_text(token, '/registrar juan, juan@test.com')
       then_i_get_text(token, 'Bienvenido juan')
@@ -139,7 +139,7 @@ describe 'BotClient' do
         error: mensaje_error
       }
 
-      MockeadorEndpoints.new.mockear_endpoint('/usuarios', 400, body)
+      MockeadorEndpoints.new.mockear_post('/usuarios', 400, body)
 
       when_i_send_text(token, '/registrar juan, juan@test.com')
       then_i_get_text(token, mensaje_error)
@@ -176,7 +176,7 @@ describe 'BotClient' do
         estado: 'En revision'
       }
 
-      MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
+      MockeadorEndpoints.new.mockear_post('/autos', 201, body)
 
       when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
       then_i_get_text(token, 'Auto con patente ABC123 ingresado al sistema')
@@ -195,7 +195,7 @@ describe 'BotClient' do
         error: mensaje_error
       }
 
-      MockeadorEndpoints.new.mockear_endpoint('/autos', 400, body)
+      MockeadorEndpoints.new.mockear_post('/autos', 400, body)
 
       when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
       then_i_get_text(token, mensaje_error)
@@ -326,7 +326,7 @@ describe 'BotClient' do
         precio: 15_000
       }
 
-      MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 200, body)
+      MockeadorEndpoints.new.mockear_post('/autos/ABC123/vender_a_fiubak', 200, body)
 
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Se ha registrado la venta de tu vehiculo de patente ABC123')
@@ -343,7 +343,7 @@ describe 'BotClient' do
         error: 'Hubo un error en la API'
       }
 
-      MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 400, body)
+      MockeadorEndpoints.new.mockear_post('/autos/ABC123/vender_a_fiubak', 400, body)
 
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Hubo un error en la API')

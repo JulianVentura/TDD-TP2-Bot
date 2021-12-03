@@ -19,7 +19,7 @@ describe 'SistemaFiubak' do
       id: 123
     }
 
-    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 201, body)
+    MockeadorEndpoints.new.mockear_post('/usuarios', 201, body)
 
     res = sistema_fiubak.registrar(datos_registro)
     esperado = RespuestaRegistro.new('juan', 'juan@mail.com', 123)
@@ -34,7 +34,7 @@ describe 'SistemaFiubak' do
       error: 'Error: Ya estas registrado'
     }
 
-    MockeadorEndpoints.new.mockear_endpoint('/usuarios', 400, body)
+    MockeadorEndpoints.new.mockear_post('/usuarios', 400, body)
 
     expect do
       sistema_fiubak.registrar(datos_registro)
@@ -53,7 +53,7 @@ describe 'SistemaFiubak' do
       es_fiubak: false
     }
 
-    MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
+    MockeadorEndpoints.new.mockear_post('/autos', 201, body)
 
     res = sistema_fiubak.ingresar_auto(datos_auto)
     esperado = RespuestaAuto.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'En revision', false)
@@ -65,7 +65,7 @@ describe 'SistemaFiubak' do
       error: 'Error: no se ingreso bien el auto'
     }
 
-    MockeadorEndpoints.new.mockear_endpoint('/autos', 400, body)
+    MockeadorEndpoints.new.mockear_post('/autos', 400, body)
     expect do
       sistema_fiubak.ingresar_auto(datos_auto)
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: no se ingreso bien el auto')))
@@ -137,7 +137,7 @@ describe 'SistemaFiubak' do
       es_fiubak: false
     }
 
-    MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 200, body)
+    MockeadorEndpoints.new.mockear_post('/autos/ABC123/vender_a_fiubak', 200, body)
 
     res = sistema_fiubak.vender_a_fiubak(DatosVentaFiubak.new('ABC123', 1234))
     esperado = RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Esperando entrega', false, 15_000)
@@ -149,7 +149,7 @@ describe 'SistemaFiubak' do
       error: 'Error: ocurrio un error'
     }
 
-    MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 400, body)
+    MockeadorEndpoints.new.mockear_post('/autos/ABC123/vender_a_fiubak', 400, body)
 
     expect do
       sistema_fiubak.vender_a_fiubak(datos_auto)
