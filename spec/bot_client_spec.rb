@@ -366,4 +366,32 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  context 'when /autos/:patente/vender_a_fiubak' do
+    it 'deberia responder exitosamente' do # rubocop:disable RSpec/ExampleLength
+      token = 'fake_token'
+
+      auto = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Publicado',
+        precio: 15_000,
+        es_fiubak: true
+      }
+
+      body = [auto]
+
+      MockeadorEndpoints.new.mockear_get('/autos', 200, body)
+
+      when_i_send_text(token, '/listar_autos')
+      then_i_get_text(token, '#1 Fiat Uno, ABC123, 10000km, año 1990, $15000, Fiubak')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
 end

@@ -53,6 +53,24 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
+  on_message '/listar_autos' do |bot, message|
+    respuesta = SistemaFiubak.new.listar_autos
+    mensaje = ''
+
+    # TODO: ver si cambiamos esto, se esta mandando un unico mensaje con todos los autos
+    respuesta.each_with_index do |auto, index|
+      mensaje += "##{1 + index} #{auto.modelo}, #{auto.patente}, #{auto.kilometros}km, año #{auto.anio}, $#{auto.precio}, #{auto.es_fiubak ? 'Fiubak' : 'Particular'}"
+      # TODO: revisar la parte de fiubak
+      mensaje += "\n" unless index == respuesta.size - 1
+    end
+
+    mensaje = 'No hay autos a la venta' if mensaje.empty?
+
+    bot.api.send_message(chat_id: message.chat.id, text: mensaje)
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
+  end
+
   on_message_pattern %r{/vender_a_fiubak( (?<argumentos>.*)|$)} do |bot, message, args|
     datos_auto = Parseador.new.parsear_vender_a_fiubak(args['argumentos'], message.chat.id)
 
