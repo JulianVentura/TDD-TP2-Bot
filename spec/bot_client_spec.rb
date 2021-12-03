@@ -352,5 +352,18 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'deberia responder a "/vender_a_fiubak" con mensaje de ayuda' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: El uso del comando es /vender_a_fiubak <patente>'
+
+      when_i_send_text(token, '/vender_a_fiubak')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end
