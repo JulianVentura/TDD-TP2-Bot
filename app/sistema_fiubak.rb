@@ -67,4 +67,21 @@ class SistemaFiubak
     RespuestaAutoCotizado.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
                               respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['precio'])
   end
+
+  def listar_autos # rubocop:disable Metrics/AbcSize
+    endpoint = '/autos'
+    respuesta = @servicio.get(endpoint)
+
+    respuesta_json = JSON.parse(respuesta.body)
+
+    raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
+
+    autos = []
+
+    respuesta_json.each do |auto|
+      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['precio']))
+    end
+
+    autos
+  end
 end

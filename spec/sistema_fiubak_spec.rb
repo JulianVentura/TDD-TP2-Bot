@@ -49,7 +49,8 @@ describe 'SistemaFiubak' do
       anio: 1990,
       id_prop: 1234,
       estado: 'En revision',
-      precio: 0
+      precio: 0,
+      es_fiubak: false
     }
 
     MockeadorEndpoints.new.mockear_endpoint('/autos', 201, body)
@@ -78,7 +79,8 @@ describe 'SistemaFiubak' do
       anio: 1990,
       id_prop: 1234,
       estado: 'En revision',
-      precio: 0
+      precio: 0,
+      es_fiubak: false
     }
 
     body = [auto]
@@ -98,7 +100,8 @@ describe 'SistemaFiubak' do
       anio: 1990,
       id_prop: 1234,
       estado: 'Cotizado',
-      precio: 5000
+      precio: 5000,
+      es_fiubak: false
     }
 
     body = [auto]
@@ -130,7 +133,8 @@ describe 'SistemaFiubak' do
       anio: 1990,
       id_prop: 1234,
       estado: 'Esperando entrega',
-      precio: 15_000
+      precio: 15_000,
+      es_fiubak: false
     }
 
     MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 200, body)
@@ -150,5 +154,26 @@ describe 'SistemaFiubak' do
     expect do
       sistema_fiubak.vender_a_fiubak(datos_auto)
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+  end
+
+  it 'deberia listar autos disponibles para comprar' do
+    auto = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'Publicado',
+      precio: 15_000,
+      es_fiubak: true
+    }
+
+    body = [auto]
+
+    MockeadorEndpoints.new.mockear_get('/autos', 200, body)
+
+    res = sistema_fiubak.listar_autos
+    esperado = [RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Publicado', 15_000)]
+    expect(res).to eq(esperado)
   end
 end
