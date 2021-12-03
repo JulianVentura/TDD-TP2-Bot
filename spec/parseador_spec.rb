@@ -126,4 +126,16 @@ describe 'Parseador' do
       Parseador.new.parsear_vender_a_fiubak(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_publicar_p2p devuelve un DatosPublicarP2P con los datos parseados' do
+    patente = 'ABC123'
+    id = 123
+    precio = 1000
+    argumentos = "#{patente},#{precio}"
+    esperado = DatosPublicarP2P.new(patente, id, precio)
+
+    datos = Parseador.new.parsear_publicar_p2p(argumentos, id)
+
+    expect(datos).to eq(esperado)
+  end
 end
