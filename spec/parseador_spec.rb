@@ -106,4 +106,13 @@ describe 'Parseador' do
 
     expect(datos).to eq(esperado)
   end
+
+  it 'parsear_vender_a_fiubak levanta ErrorParseo cuando hay argumentos es nil' do
+    id = 5
+    argumentos = nil
+
+    expect  do
+      Parseador.new.parsear_vender_a_fiubak(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end

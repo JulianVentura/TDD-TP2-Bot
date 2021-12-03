@@ -25,6 +25,7 @@ class Parseador
   end
 
   def parsear_vender_a_fiubak(argumentos, id)
+    raise ErrorParseo if argumentos.nil?
     argumentos = argumentos.split(',')
 
     DatosVentaFiubak.new(argumentos[0].strip, id)
