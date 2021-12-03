@@ -54,7 +54,7 @@ class Routes
   end
 
   on_message_pattern %r{/vender_a_fiubak( (?<argumentos>.*)|$)} do |bot, message, args|
-    datos_auto = Parseador.new.parsear_ingresar_auto(args['argumentos'], message.chat.id) # TODO: cambiar nombre a la funcion, es lo mismo para este caso
+    datos_auto = Parseador.new.parsear_vender_a_fiubak(args['argumentos'], message.chat.id)
 
     respuesta = SistemaFiubak.new.vender_a_fiubak(datos_auto)
 

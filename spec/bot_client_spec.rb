@@ -313,7 +313,7 @@ describe 'BotClient' do
   end
 
   context 'when /autos/:patente/vender_a_fiubak' do
-    xit 'deberia responder exitosamente' do
+    it 'deberia responder exitosamente' do
       token = 'fake_token'
 
       body = {
@@ -326,7 +326,7 @@ describe 'BotClient' do
         precio: 15_000
       }
 
-      MockeadorEndpoints.new.mockear_get('/autos/ABC123/vender_a_fiubak', 200, body)
+      MockeadorEndpoints.new.mockear_endpoint('/autos/ABC123/vender_a_fiubak', 200, body)
 
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Se ha registrado la venta de tu vehiculo de patente ABC123')
