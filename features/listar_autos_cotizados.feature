@@ -1,3 +1,4 @@
+#language: es
 @manual
 Característica: Cotizacion de autos
 
