@@ -312,7 +312,7 @@ describe 'BotClient' do
     end
   end
 
-  context 'when /autos/:patente/vender_a_fiubak' do
+  context 'when /vender_a_fiubak' do
     it 'deberia responder exitosamente' do
       token = 'fake_token'
 
@@ -367,7 +367,7 @@ describe 'BotClient' do
     end
   end
 
-  context 'when /autos/:patente/vender_a_fiubak' do
+  context 'when /listar_autos' do
     it 'deberia responder exitosamente' do # rubocop:disable RSpec/ExampleLength
       token = 'fake_token'
 
@@ -388,6 +388,31 @@ describe 'BotClient' do
 
       when_i_send_text(token, '/listar_autos')
       then_i_get_text(token, '#1 Fiat Uno, ABC123, 10000km, año 1990, $15000, Fiubak')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
+
+  context 'when /publicar_p2p' do
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      body = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Publicado',
+        precio: 30_000
+      }
+
+      MockeadorEndpoints.new.mockear_post('/autos/ABC123/publicar_p2p', 200, body)
+
+      when_i_send_text(token, '/publicar_p2p ABC123')
+      then_i_get_text(token, 'Se ha publicado exitosamente tu vehiculo de patente ABC123 a precio 30000')
 
       app = BotClient.new(token)
 

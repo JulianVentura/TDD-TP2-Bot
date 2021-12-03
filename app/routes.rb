@@ -83,6 +83,14 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /vender_a_fiubak <patente>')
   end
 
+  on_message_pattern %r{/publicar_p2p( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_auto = Parseador.new.parsear_publicar_p2p(args['argumentos'], message.chat.id)
+
+    respuesta = SistemaFiubak.new.publicar_p2p(datos_auto)
+    # TODO: agregar manejo de errores
+    bot.api.send_message(chat_id: message.chat.id, text: "Se ha publicado exitosamente tu vehiculo de patente #{respuesta.patente} a precio #{respuesta.precio}")
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end
