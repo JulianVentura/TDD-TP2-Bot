@@ -1,4 +1,3 @@
-#language: es
 @manual
 Característica: Listar autos disponibles para comprar
 
