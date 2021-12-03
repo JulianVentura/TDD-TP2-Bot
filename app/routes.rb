@@ -59,6 +59,8 @@ class Routes
     respuesta = SistemaFiubak.new.vender_a_fiubak(datos_auto)
 
     bot.api.send_message(chat_id: message.chat.id, text: "Se ha registrado la venta de tu vehiculo de patente #{respuesta.patente}")
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
   on_message '/version' do |bot, message|
