@@ -1,3 +1,4 @@
+require './app/datos/datos_venta_fiubak'
 describe 'DatosVentaFiubak' do
   it 'deberian ser iguales' do
     datos1 = DatosVentaFiubak.new('ABC123', 1234)
