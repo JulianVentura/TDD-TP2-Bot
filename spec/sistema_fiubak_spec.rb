@@ -198,4 +198,23 @@ describe 'SistemaFiubak' do
       sistema_fiubak.listar_autos
     end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
   end
+
+  xit 'deberia publicar un auto p2p' do
+    body = {
+      patente: 'ABC123',
+      modelo: 'Fiat Uno',
+      kilometros: 10_000,
+      anio: 1990,
+      id_prop: 1234,
+      estado: 'Publicado',
+      precio: 30_000,
+      es_fiubak: false
+    }
+
+    MockeadorEndpoints.new.mockear_post('/autos/ABC123/publicar_p2p', 200, body)
+
+    res = sistema_fiubak.publicar_p2p(DatosPublicarP2P.new('ABC123', 1234, 30_000))
+    esperado = RespuestaAutoCotizado.new('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Publicado', false, 30_000)
+    expect(res).to eq(esperado)
+  end
 end
