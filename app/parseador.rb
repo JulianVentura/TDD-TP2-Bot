@@ -29,6 +29,8 @@ class Parseador
 
     argumentos = argumentos.split(',')
 
+    raise ErrorParseo if argumentos.size != 1
+
     DatosVentaFiubak.new(argumentos[0].strip, id)
   end
 end

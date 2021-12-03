@@ -115,4 +115,15 @@ describe 'Parseador' do
       Parseador.new.parsear_vender_a_fiubak(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_vender_a_fiubak levanta ErrorParseo cuando hay mas de un argumento' do
+    patente = 'ABC123'
+    modelo = 'Fiat Uno'
+    id = 5
+    argumentos = "#{patente},#{modelo}"
+
+    expect  do
+      Parseador.new.parsear_vender_a_fiubak(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end
