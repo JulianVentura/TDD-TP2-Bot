@@ -14,9 +14,8 @@ class SistemaFiubak
 
   def registrar(datos_registro)
     endpoint = '/usuarios'
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { nombre: datos_registro.nombre, email: datos_registro.email, id: datos_registro.id }.to_json
-    end
+    body = { nombre: datos_registro.nombre, email: datos_registro.email, id: datos_registro.id }
+    respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 201)
 
@@ -25,10 +24,9 @@ class SistemaFiubak
 
   def ingresar_auto(datos_auto) # rubocop:disable Metrics/AbcSize
     endpoint = '/autos'
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { patente: datos_auto.patente, modelo: datos_auto.modelo, id_prop: datos_auto.id_prop,
-                   kilometros: datos_auto.kilometros, anio: datos_auto.anio }.to_json
-    end
+    body = { patente: datos_auto.patente, modelo: datos_auto.modelo, id_prop: datos_auto.id_prop,
+             kilometros: datos_auto.kilometros, anio: datos_auto.anio }
+    respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 201)
 
@@ -54,9 +52,8 @@ class SistemaFiubak
 
   def vender_a_fiubak(datos_compraventa_fiubak)
     endpoint = "/autos/#{datos_compraventa_fiubak.patente}/vender_a_fiubak"
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { id_prop: datos_compraventa_fiubak.id_prop }.to_json
-    end
+    body = { id_prop: datos_compraventa_fiubak.id_prop }
+    respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 200)
 
@@ -83,9 +80,8 @@ class SistemaFiubak
 
   def publicar_p2p(datos_auto) # rubocop:disable Metrics/AbcSize
     endpoint = "/autos/#{datos_auto.patente}/publicar_p2p"
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { id_prop: datos_auto.id_prop, precio: datos_auto.precio }.to_json
-    end
+    body = { id_prop: datos_auto.id_prop, precio: datos_auto.precio }
+    respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 200)
 
@@ -94,11 +90,10 @@ class SistemaFiubak
                                    respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
 
-  def comprar(datos_compraventa_fiubak) # rubocop:disable Metrics/AbcSize
+  def comprar(datos_compraventa_fiubak)
     endpoint = "/autos/#{datos_compraventa_fiubak.patente}/comprar"
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { id_prop: datos_compraventa_fiubak.id_prop }.to_json
-    end
+    body = { id_prop: datos_compraventa_fiubak.id_prop }
+    respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 200)
 
@@ -109,9 +104,8 @@ class SistemaFiubak
 
   def realizar_oferta(datos_oferta)
     endpoint = "/autos/#{datos_oferta.patente}/realizar_oferta"
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { id_ofertante: datos_oferta.id_ofertante, precio: datos_oferta.precio }.to_json
-    end
+    body = { id_ofertante: datos_oferta.id_ofertante, precio: datos_oferta.precio }
+    respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 200)
 
@@ -120,9 +114,8 @@ class SistemaFiubak
 
   def rechazar_oferta(datos_oferta_elegida)
     endpoint = "/ofertas/#{datos_oferta_elegida.id_oferta}/rechazar_oferta"
-    respuesta = @servicio.post(endpoint) do |req|
-      req.body = { id_oferta: datos_oferta_elegida.id_oferta }.to_json
-    end
+    body = { id_oferta: datos_oferta_elegida.id_oferta }
+    respuesta = realizar_post(endpoint, body)
     # TODO: POST o PATCH?
 
     respuesta_json = parsear_json(respuesta, 200)
@@ -138,5 +131,11 @@ class SistemaFiubak
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == codigo
 
     respuesta_json
+  end
+
+  def realizar_post(endpoint, body)
+    @servicio.post(endpoint) do |req|
+      req.body = body.to_json
+    end
   end
 end
