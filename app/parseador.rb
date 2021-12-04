@@ -7,7 +7,7 @@ require './app/errores/error_parseo'
 
 class Parseador
   def parsear_registro(argumentos, id)
-    raise ErrorParseo if argumentos.nil?
+    tiene_argumentos?(argumentos)
 
     argumentos = argumentos.split(',')
 
@@ -17,7 +17,7 @@ class Parseador
   end
 
   def parsear_ingresar_auto(argumentos, id)
-    raise ErrorParseo if argumentos.nil?
+    tiene_argumentos?(argumentos)
 
     argumentos = argumentos.split(',')
 
@@ -27,7 +27,7 @@ class Parseador
   end
 
   def parsear_compraventa_a_fiubak(argumentos, id)
-    raise ErrorParseo if argumentos.nil?
+    tiene_argumentos?(argumentos)
 
     argumentos = argumentos.split(',')
 
@@ -37,7 +37,7 @@ class Parseador
   end
 
   def parsear_publicar_p2p(argumentos, id)
-    raise ErrorParseo if argumentos.nil?
+    tiene_argumentos?(argumentos)
 
     argumentos = argumentos.split(',')
 
@@ -47,10 +47,18 @@ class Parseador
   end
 
   def parsear_realizar_oferta(argumentos, id)
+    tiene_argumentos?(argumentos)
+
     argumentos = argumentos.split(',')
 
     raise ErrorParseo if argumentos.size != 2
 
     DatosRealizarOferta.new(id, argumentos[0].strip, argumentos[1].to_i)
+  end
+
+  private
+
+  def tiene_argumentos?(argumentos)
+    raise ErrorParseo if argumentos.nil?
   end
 end

@@ -179,4 +179,13 @@ describe 'Parseador' do
       Parseador.new.parsear_realizar_oferta(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_realizar_oferta levanta ErrorParseo cuando no hay argumentos' do
+    id = 123
+    argumentos = nil
+
+    expect  do
+      Parseador.new.parsear_realizar_oferta(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end
