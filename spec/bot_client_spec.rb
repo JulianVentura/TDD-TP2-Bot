@@ -525,7 +525,7 @@ describe 'BotClient' do
   end
 
   context 'when /realizar_oferta' do
-    xit 'deberia responder exitosamente' do
+    it 'deberia responder exitosamente' do
       token = 'fake_token'
 
       body = {
