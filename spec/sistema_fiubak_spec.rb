@@ -14,7 +14,7 @@ describe 'SistemaFiubak' do
   let(:datos_auto) { DatosAuto.new('Fiat Uno', 'ABC123', 10_000, 1990, 1234) }
   let(:datos_p2p) { DatosPublicarP2P.new('ABC123', 1234, 30_000) }
   let(:datos_compraventa_fiubak) { DatosCompraVentaFiubak.new('ABC123', 1234) }
-  let(:datos_realizar_oferta) { DatosRealizarOferta.new('ABC123', 1234, 30_000) }
+  let(:datos_realizar_oferta) { DatosRealizarOferta.new(1234, 'ABC123', 30_000) }
 
   context('when registrar') do
     it 'deberia registrar un usuario' do

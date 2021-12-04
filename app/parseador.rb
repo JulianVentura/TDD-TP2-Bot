@@ -44,4 +44,10 @@ class Parseador
 
     DatosPublicarP2P.new(argumentos[0].strip, id, argumentos[1].to_i)
   end
+
+  def parsear_realizar_oferta(argumentos, id)
+    argumentos = argumentos.split(',')
+
+    DatosRealizarOferta.new(id, argumentos[0].strip, argumentos[1].to_i)
+  end
 end

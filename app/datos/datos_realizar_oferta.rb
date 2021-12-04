@@ -1,8 +1,8 @@
 class DatosRealizarOferta
-  def initialize(patente, id_ofertante, precio)
+  def initialize(id_ofertante, patente, precio)
     # TODO: como el el id que pasamos no es el de un propietario, rompe cuando buscamos el atributo id_prop
-    @patente = patente
     @id_ofertante = id_ofertante
+    @patente = patente
     @precio = precio
   end
 

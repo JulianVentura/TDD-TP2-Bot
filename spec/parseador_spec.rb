@@ -157,4 +157,16 @@ describe 'Parseador' do
       Parseador.new.parsear_publicar_p2p(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_realizar_oferta devuelve un DatosRealizarOferta con los datos parseados' do
+    patente = 'ABC123'
+    id_ofertante = 123
+    precio = 1000
+    argumentos = "#{patente},#{precio}"
+    esperado = DatosRealizarOferta.new(id_ofertante, patente, precio)
+
+    datos = Parseador.new.parsear_realizar_oferta(argumentos, id_ofertante)
+
+    expect(datos).to eq(esperado)
+  end
 end
