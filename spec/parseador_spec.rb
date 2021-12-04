@@ -169,4 +169,14 @@ describe 'Parseador' do
 
     expect(datos).to eq(esperado)
   end
+
+  it 'parsear_realizar_oferta levanta ErrorParseo cuando la cantidad de argumentos es distinta de 2' do
+    patente = 'ABC123'
+    id = 123
+    argumentos = patente.to_s
+
+    expect  do
+      Parseador.new.parsear_realizar_oferta(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end

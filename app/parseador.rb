@@ -49,6 +49,8 @@ class Parseador
   def parsear_realizar_oferta(argumentos, id)
     argumentos = argumentos.split(',')
 
+    raise ErrorParseo if argumentos.size != 2
+
     DatosRealizarOferta.new(id, argumentos[0].strip, argumentos[1].to_i)
   end
 end
