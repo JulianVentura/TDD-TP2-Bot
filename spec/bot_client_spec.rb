@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'web_mock'
+require 'endpoints_helper'
 # Uncomment to use VCR
 # require 'vcr_helper'
 
@@ -120,7 +121,7 @@ describe 'BotClient' do
         id: 123
       }
 
-      MockeadorEndpoints.new.mockear_post('/usuarios', 201, body)
+      MockeadorEndpoints.new.mockear_post(registrar_url, 201, body)
 
       when_i_send_text(token, '/registrar juan, juan@test.com')
       then_i_get_text(token, 'Bienvenido juan')
@@ -139,7 +140,7 @@ describe 'BotClient' do
         error: mensaje_error
       }
 
-      MockeadorEndpoints.new.mockear_post('/usuarios', 400, body)
+      MockeadorEndpoints.new.mockear_post(registrar_url, 400, body)
 
       when_i_send_text(token, '/registrar juan, juan@test.com')
       then_i_get_text(token, mensaje_error)
@@ -176,7 +177,7 @@ describe 'BotClient' do
         estado: 'En revision'
       }
 
-      MockeadorEndpoints.new.mockear_post('/autos', 201, body)
+      MockeadorEndpoints.new.mockear_post(ingresar_auto_url, 201, body)
 
       when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
       then_i_get_text(token, 'Auto con patente ABC123 ingresado al sistema')
@@ -195,7 +196,7 @@ describe 'BotClient' do
         error: mensaje_error
       }
 
-      MockeadorEndpoints.new.mockear_post('/autos', 400, body)
+      MockeadorEndpoints.new.mockear_post(ingresar_auto_url, 400, body)
 
       when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
       then_i_get_text(token, mensaje_error)
@@ -236,7 +237,7 @@ describe 'BotClient' do
 
       body = [auto]
 
-      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
+      MockeadorEndpoints.new.mockear_get(consultar_mis_autos_url(CHAT_ID), 200, body)
 
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, '#1 ABC123, En revision')
@@ -261,7 +262,7 @@ describe 'BotClient' do
 
       body = [auto1]
 
-      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
+      MockeadorEndpoints.new.mockear_get(consultar_mis_autos_url(CHAT_ID), 200, body)
 
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, '#1 ABC123, Cotizado, 5000')
@@ -286,7 +287,7 @@ describe 'BotClient' do
 
       body = [auto1, auto]
 
-      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
+      MockeadorEndpoints.new.mockear_get(consultar_mis_autos_url(CHAT_ID), 200, body)
 
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, "#1 AB123CD, Cotizado, 5000\n#2 ABC123, En revision")
@@ -301,7 +302,7 @@ describe 'BotClient' do
 
       body = []
 
-      MockeadorEndpoints.new.mockear_get("/usuarios/#{CHAT_ID}/autos", 200, body)
+      MockeadorEndpoints.new.mockear_get(consultar_mis_autos_url(CHAT_ID), 200, body)
 
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, 'No tenes autos registrados')
@@ -326,7 +327,7 @@ describe 'BotClient' do
         precio: 15_000
       }
 
-      MockeadorEndpoints.new.mockear_post('/autos/ABC123/vender_a_fiubak', 200, body)
+      MockeadorEndpoints.new.mockear_post(vender_a_fiubak_url('ABC123'), 200, body)
 
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Se ha registrado la venta de tu vehiculo de patente ABC123')
@@ -343,7 +344,7 @@ describe 'BotClient' do
         error: 'Hubo un error en la API'
       }
 
-      MockeadorEndpoints.new.mockear_post('/autos/ABC123/vender_a_fiubak', 400, body)
+      MockeadorEndpoints.new.mockear_post(vender_a_fiubak_url('ABC123'), 400, body)
 
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Hubo un error en la API')
@@ -384,7 +385,7 @@ describe 'BotClient' do
 
       body = [auto]
 
-      MockeadorEndpoints.new.mockear_get('/autos', 200, body)
+      MockeadorEndpoints.new.mockear_get(listar_autos_url, 200, body)
 
       when_i_send_text(token, '/listar_autos')
       then_i_get_text(token, '#1 Fiat Uno, ABC123, 10000km, año 1990, $15000, Fiubak')
@@ -409,7 +410,7 @@ describe 'BotClient' do
         precio: 30_000
       }
 
-      MockeadorEndpoints.new.mockear_post('/autos/ABC123/publicar_p2p', 200, body)
+      MockeadorEndpoints.new.mockear_post(publicar_p2p_url('ABC123'), 200, body)
 
       when_i_send_text(token, '/publicar_p2p ABC123, 30000')
       then_i_get_text(token, 'Se ha publicado exitosamente tu vehiculo de patente ABC123 a precio 30000')
@@ -426,7 +427,7 @@ describe 'BotClient' do
         error: 'Hubo un error en la API'
       }
 
-      MockeadorEndpoints.new.mockear_post('/autos/ABC123/publicar_p2p', 400, body)
+      MockeadorEndpoints.new.mockear_post(publicar_p2p_url('ABC123'), 400, body)
 
       when_i_send_text(token, '/publicar_p2p ABC123, 30000')
       then_i_get_text(token, 'Hubo un error en la API')
