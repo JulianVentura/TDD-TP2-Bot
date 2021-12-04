@@ -36,6 +36,8 @@ class Parseador
   end
 
   def parsear_publicar_p2p(argumentos, id)
+    raise ErrorParseo if argumentos.nil?
+
     argumentos = argumentos.split(',')
 
     raise ErrorParseo if argumentos.size != 2
