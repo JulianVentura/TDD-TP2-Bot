@@ -282,33 +282,15 @@ describe 'SistemaFiubak' do
   context('when realizar_oferta') do
     xit 'deberia realizar una oferta a un auto particular' do
       body = {
-        patente: 'ABC123',
-        modelo: 'Fiat Uno',
-        kilometros: 10_000,
-        anio: 1990,
-        id_prop: 1234,
-        estado: 'Publicado',
-        precio: 30_000,
-        es_fiubak: false
+        patente: 'ABC123'
       }
 
       MockeadorEndpoints.new.mockear_post(realizar_oferta_url('ABC123'), 200, body)
 
-      res = sistema_fiubak.publicar_p2p(datos_realizar_oferta)
-      esperado = FabricaRespuestaAuto.new.crear('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Publicado', false, 30_000)
+      res = sistema_fiubak.realizar_oferta(datos_realizar_oferta)
+      # TODO: definir que devuelve una oferta exitosa
+      esperado = RespuestaOferta.new.call('ABC123')
       expect(res).to eq(esperado)
-    end
-
-    xit 'deberia fallar si llega un error en publicar un auto p2p' do
-      body = {
-        error: 'Error: ocurrio un error'
-      }
-
-      MockeadorEndpoints.new.mockear_post(publicar_p2p_url('ABC123'), 400, body)
-
-      expect do
-        sistema_fiubak.publicar_p2p(datos_p2p)
-      end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
     end
   end
 end
