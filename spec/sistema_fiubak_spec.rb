@@ -280,7 +280,7 @@ describe 'SistemaFiubak' do
   end
 
   context('when realizar_oferta') do
-    xit 'deberia realizar una oferta a un auto particular' do
+    it 'deberia realizar una oferta a un auto particular' do
       body = {
         patente: 'ABC123'
       }
@@ -289,7 +289,7 @@ describe 'SistemaFiubak' do
 
       res = sistema_fiubak.realizar_oferta(datos_realizar_oferta)
       # TODO: definir que devuelve una oferta exitosa
-      esperado = RespuestaOferta.new.call('ABC123')
+      esperado = RespuestaRealizarOferta.new('ABC123')
       expect(res).to eq(esperado)
     end
   end

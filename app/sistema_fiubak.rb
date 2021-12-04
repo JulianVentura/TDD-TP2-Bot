@@ -119,4 +119,17 @@ class SistemaFiubak
                                    respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'],
                                    respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
+
+  def realizar_oferta(datos_oferta)
+    endpoint = "/autos/#{datos_oferta.patente}/realizar_oferta"
+    respuesta = @servicio.post(endpoint) do |req|
+      req.body = { id_ofertante: datos_oferta.id_ofertante, precio: datos_oferta.precio }.to_json
+    end
+
+    respuesta_json = JSON.parse(respuesta.body)
+
+    raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
+
+    RespuestaRealizarOferta.new(respuesta_json['patente'])
+  end
 end
