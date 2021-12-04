@@ -72,7 +72,7 @@ class Routes
   end
 
   on_message_pattern %r{/vender_a_fiubak( (?<argumentos>.*)|$)} do |bot, message, args|
-    datos_auto = Parseador.new.parsear_vender_a_fiubak(args['argumentos'], message.chat.id)
+    datos_auto = Parseador.new.parsear_compraventa_a_fiubak(args['argumentos'], message.chat.id)
 
     respuesta = SistemaFiubak.new.vender_a_fiubak(datos_auto)
 
@@ -87,12 +87,20 @@ class Routes
     datos_auto = Parseador.new.parsear_publicar_p2p(args['argumentos'], message.chat.id)
 
     respuesta = SistemaFiubak.new.publicar_p2p(datos_auto)
-    # TODO: agregar manejo de errores
+
     bot.api.send_message(chat_id: message.chat.id, text: "Se ha publicado exitosamente tu vehiculo de patente #{respuesta.patente} a precio #{respuesta.precio}")
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /publicar_p2p <patente>, <precio>')
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
+  end
+
+  on_message_pattern %r{/comprar( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_auto = Parseador.new.parsear_compraventa_a_fiubak(args['argumentos'], message.chat.id)
+
+    respuesta = SistemaFiubak.new.publicar_p2p(datos_auto)
+    # TODO: agregar manejo de errores
+    bot.api.send_message(chat_id: message.chat.id, text: "Has comprado a fiubak el vehiculo de patente #{respuesta.patente} por un precio de #{respuesta.precio}")
   end
 
   on_message '/version' do |bot, message|

@@ -102,7 +102,7 @@ describe 'Parseador' do
     argumentos = patente.to_s
     esperado = DatosCompraVentaFiubak.new(patente, id)
 
-    datos = Parseador.new.parsear_vender_a_fiubak(argumentos, id)
+    datos = Parseador.new.parsear_compraventa_a_fiubak(argumentos, id)
 
     expect(datos).to eq(esperado)
   end
@@ -112,7 +112,7 @@ describe 'Parseador' do
     argumentos = nil
 
     expect  do
-      Parseador.new.parsear_vender_a_fiubak(argumentos, id)
+      Parseador.new.parsear_compraventa_a_fiubak(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
 
@@ -123,7 +123,7 @@ describe 'Parseador' do
     argumentos = "#{patente},#{modelo}"
 
     expect  do
-      Parseador.new.parsear_vender_a_fiubak(argumentos, id)
+      Parseador.new.parsear_compraventa_a_fiubak(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
 

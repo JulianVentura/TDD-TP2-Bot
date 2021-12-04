@@ -25,7 +25,7 @@ class Parseador
     DatosAuto.new(argumentos[0].strip, argumentos[1].strip, argumentos[2].to_i, argumentos[3].to_i, id)
   end
 
-  def parsear_vender_a_fiubak(argumentos, id)
+  def parsear_compraventa_a_fiubak(argumentos, id)
     raise ErrorParseo if argumentos.nil?
 
     argumentos = argumentos.split(',')

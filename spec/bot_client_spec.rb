@@ -437,4 +437,30 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  context 'when /publicar_p2p' do
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      body = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Vendido',
+        precio: 30_000,
+        es_fiubak: false
+      }
+
+      MockeadorEndpoints.new.mockear_post(comprar_a_fiubak_url('ABC123'), 200, body)
+
+      when_i_send_text(token, '/comprar ABC123')
+      then_i_get_text(token, 'Has comprado a fiubak el auto de patente ABC123 por un precio de 30000')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
 end
