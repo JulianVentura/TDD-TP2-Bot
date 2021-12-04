@@ -121,7 +121,7 @@ class Routes
   end
 
   on_message_pattern %r{/rechazar_oferta( (?<argumentos>.*)|$)} do |bot, message, args|
-    datos_oferta_elegida = Parseador.new.parsear_oferta_elegida(args['argumentos'])
+    datos_oferta_elegida = Parseador.new.parsear_oferta_elegida(args['argumentos'], message.chat.id)
 
     respuesta = SistemaFiubak.new.rechazar_oferta(datos_oferta_elegida)
 

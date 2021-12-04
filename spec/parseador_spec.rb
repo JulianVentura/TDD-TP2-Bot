@@ -191,28 +191,31 @@ describe 'Parseador' do
 
   it 'parsear_oferta_elegida devuelve un DatosOfertaElegida con los datos parseados' do
     id_oferta = 123
+    id = 1234
     argumentos = id_oferta.to_s
-    esperado = DatosOfertaElegida.new(id_oferta)
+    esperado = DatosOfertaElegida.new(id, id_oferta)
 
-    datos = Parseador.new.parsear_oferta_elegida(argumentos)
+    datos = Parseador.new.parsear_oferta_elegida(argumentos, id)
 
     expect(datos).to eq(esperado)
   end
 
   it 'parsear_oferta_elegida levanta ErrorParseo cuando la cantidad de argumentos es distinta de 1' do
     id_oferta = 123
+    id = 1234
     argumentos = "#{id_oferta},100"
 
     expect  do
-      Parseador.new.parsear_oferta_elegida(argumentos)
+      Parseador.new.parsear_oferta_elegida(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
 
   it 'parsear_oferta_elegida levanta ErrorParseo cuando no hay argumentos' do
     argumentos = nil
+    id = 1234
 
     expect  do
-      Parseador.new.parsear_oferta_elegida(argumentos)
+      Parseador.new.parsear_oferta_elegida(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
 end
