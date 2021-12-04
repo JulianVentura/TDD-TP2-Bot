@@ -57,6 +57,8 @@ class Parseador
   end
 
   def parsear_oferta_elegida(argumentos)
+    tiene_argumentos?(argumentos)
+
     argumentos = argumentos.split(',')
 
     raise ErrorParseo if argumentos.size != 1

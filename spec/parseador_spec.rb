@@ -207,4 +207,12 @@ describe 'Parseador' do
       Parseador.new.parsear_oferta_elegida(argumentos)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_oferta_elegida levanta ErrorParseo cuando no hay argumentos' do
+    argumentos = nil
+
+    expect  do
+      Parseador.new.parsear_oferta_elegida(argumentos)
+    end.to raise_error(ErrorParseo)
+  end
 end
