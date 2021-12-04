@@ -1,3 +1,5 @@
+#language: es
+@manual
 Característica: Realizar oferta
 
   Antecedentes:
