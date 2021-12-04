@@ -2,6 +2,7 @@ require './app/datos/datos_registro'
 require './app/datos/datos_auto'
 require './app/datos/datos_compra_venta_fiubak'
 require './app/datos/datos_publicar_p2p'
+require './app/datos/datos_realizar_oferta'
 require './app/errores/error_parseo'
 
 class Parseador

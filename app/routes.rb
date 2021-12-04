@@ -107,6 +107,17 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
+  on_message_pattern %r{/realizar_oferta( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_oferta = Parseador.new.parsear_realizar_oferta(args['argumentos'], message.chat.id)
+
+    respuesta = SistemaFiubak.new.realizar_oferta(datos_oferta)
+
+    bot.api.send_message(chat_id: message.chat.id,
+                         text: "Has realizado con exito la oferta numero #{respuesta.id_oferta}
+                                al auto de patente #{respuesta.patente}
+                                con un precio de #{respuesta.precio}")
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end

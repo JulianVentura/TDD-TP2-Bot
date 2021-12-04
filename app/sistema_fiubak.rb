@@ -1,6 +1,7 @@
 require_relative './respuestas/respuesta_registro'
 require_relative './respuestas/respuesta_auto'
 require_relative './respuestas/fabrica_respuesta_auto'
+require_relative './respuestas/respuesta_realizar_oferta'
 require './app/errores/error_api'
 
 class SistemaFiubak
@@ -120,7 +121,7 @@ class SistemaFiubak
                                    respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
 
-  def realizar_oferta(datos_oferta)
+  def realizar_oferta(datos_oferta) # rubocop:disable Metrics/AbcSize
     endpoint = "/autos/#{datos_oferta.patente}/realizar_oferta"
     respuesta = @servicio.post(endpoint) do |req|
       req.body = { id_ofertante: datos_oferta.id_ofertante, precio: datos_oferta.precio }.to_json
@@ -130,6 +131,6 @@ class SistemaFiubak
 
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
-    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'])
+    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'])
   end
 end

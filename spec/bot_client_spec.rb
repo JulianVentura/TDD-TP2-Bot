@@ -531,8 +531,8 @@ describe 'BotClient' do
       body = {
         id_oferta: 1,
         id_ofertante: 4567,
-        patente: 'ABC123'
-
+        patente: 'ABC123',
+        precio: 30_000
       }
 
       MockeadorEndpoints.new.mockear_post(realizar_oferta_url('ABC123'), 200, body)
