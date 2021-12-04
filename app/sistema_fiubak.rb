@@ -27,15 +27,16 @@ class SistemaFiubak
   def ingresar_auto(datos_auto) # rubocop:disable Metrics/AbcSize
     endpoint = '/autos'
     respuesta = @servicio.post(endpoint) do |req|
-      req.body = { patente: datos_auto.patente, modelo: datos_auto.modelo, id_prop: datos_auto.id_prop, kilometros: datos_auto.kilometros, anio: datos_auto.anio }.to_json
+      req.body = { patente: datos_auto.patente, modelo: datos_auto.modelo, id_prop: datos_auto.id_prop,
+                   kilometros: datos_auto.kilometros, anio: datos_auto.anio }.to_json
     end
 
     respuesta_json = JSON.parse(respuesta.body)
 
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 201
 
-    RespuestaAuto.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'], respuesta_json['anio'],
-                      respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'])
+    RespuestaAuto.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
+                      respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'])
   end
 
   def consultar_mis_autos(id_prop) # rubocop:disable Metrics/AbcSize
@@ -49,16 +50,17 @@ class SistemaFiubak
     autos = []
 
     respuesta_json.each do |auto|
-      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['es_fiubak'], auto['precio']))
+      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'],
+                                                  auto['id_prop'], auto['estado'], auto['es_fiubak'], auto['precio']))
     end
 
     autos
   end
 
-  def vender_a_fiubak(datos_auto) # rubocop:disable Metrics/AbcSize
-    endpoint = "/autos/#{datos_auto.patente}/vender_a_fiubak"
+  def vender_a_fiubak(datos_compraventa_fiubak) # rubocop:disable Metrics/AbcSize
+    endpoint = "/autos/#{datos_compraventa_fiubak.patente}/vender_a_fiubak"
     respuesta = @servicio.post(endpoint) do |req|
-      req.body = { id_prop: datos_auto.id_prop }.to_json
+      req.body = { id_prop: datos_compraventa_fiubak.id_prop }.to_json
     end
 
     respuesta_json = JSON.parse(respuesta.body)
@@ -66,7 +68,8 @@ class SistemaFiubak
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
     RespuestaAutoCotizado.new(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
-                              respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'], respuesta_json['precio'])
+                              respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'],
+                              respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
 
   def listar_autos # rubocop:disable Metrics/AbcSize
@@ -80,7 +83,8 @@ class SistemaFiubak
     autos = []
 
     respuesta_json.each do |auto|
-      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'], auto['id_prop'], auto['estado'], auto['es_fiubak'], auto['precio']))
+      autos.append(FabricaRespuestaAuto.new.crear(auto['patente'], auto['modelo'], auto['kilometros'], auto['anio'],
+                                                  auto['id_prop'], auto['estado'], auto['es_fiubak'], auto['precio']))
     end
 
     autos
@@ -97,7 +101,8 @@ class SistemaFiubak
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
     FabricaRespuestaAuto.new.crear(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
-                                   respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'], respuesta_json['precio'])
+                                   respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'],
+                                   respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
 
   def comprar(datos_compraventa_fiubak) # rubocop:disable Metrics/AbcSize
@@ -111,6 +116,7 @@ class SistemaFiubak
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
     FabricaRespuestaAuto.new.crear(respuesta_json['patente'], respuesta_json['modelo'], respuesta_json['kilometros'],
-                                   respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'], respuesta_json['es_fiubak'], respuesta_json['precio'])
+                                   respuesta_json['anio'], respuesta_json['id_prop'], respuesta_json['estado'],
+                                   respuesta_json['es_fiubak'], respuesta_json['precio'])
   end
 end
