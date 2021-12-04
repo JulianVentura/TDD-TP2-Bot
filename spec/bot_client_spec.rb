@@ -436,9 +436,22 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'deberia responder a "/publicar_p2p ABC123" con mensaje de ayuda' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: El uso del comando es /publicar_p2p <patente>, <precio>'
+
+      when_i_send_text(token, '/publicar_p2p ABC123')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 
-  context 'when /publicar_p2p' do
+  context 'when /comprar' do
     it 'deberia responder exitosamente' do
       token = 'fake_token'
 
@@ -480,7 +493,7 @@ describe 'BotClient' do
       app.run_once
     end
 
-    it 'deberia responder a "/registrar juan" con mensaje de ayuda' do
+    it 'deberia responder a "/comprar" con mensaje de ayuda' do
       token = 'fake_token'
 
       mensaje_error = 'Error: El uso del comando es /comprar <patente>'
