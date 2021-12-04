@@ -101,6 +101,8 @@ class Routes
     respuesta = SistemaFiubak.new.comprar(datos_compra)
     # TODO: agregar manejo de errores
     bot.api.send_message(chat_id: message.chat.id, text: "Has comprado a fiubak el auto de patente #{respuesta.patente} por un precio de #{respuesta.precio}")
+  rescue ErrorParseo
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /comprar <patente>')
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
