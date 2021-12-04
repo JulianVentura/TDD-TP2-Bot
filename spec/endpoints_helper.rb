@@ -22,6 +22,10 @@ def realizar_oferta_url(patente)
   "/autos/#{patente}/realizar_oferta"
 end
 
+def rechazar_oferta_url(id_oferta)
+  "/ofertas/#{id_oferta}/rechazar_oferta"
+end
+
 def listar_autos_url
   '/autos'
 end

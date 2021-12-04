@@ -133,4 +133,16 @@ class SistemaFiubak
 
     RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
   end
+
+  def rechazar_oferta(datos_oferta_elegida)
+    endpoint = "/ofertas/#{datos_oferta_elegida.id_oferta}/rechazar_oferta"
+    respuesta = @servicio.post(endpoint) do |req|
+      req.body = { id_oferta: datos_oferta_elegida.id_oferta }.to_json
+    end
+    # TODO: POST o PATCH?
+
+    respuesta_json = JSON.parse(respuesta.body)
+
+    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
+  end
 end

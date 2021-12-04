@@ -14,7 +14,6 @@ describe 'SistemaFiubak' do
   let(:datos_auto) { DatosAuto.new('Fiat Uno', 'ABC123', 10_000, 1990, 1234) }
   let(:datos_p2p) { DatosPublicarP2P.new('ABC123', 1234, 30_000) }
   let(:datos_compraventa_fiubak) { DatosCompraVentaFiubak.new('ABC123', 1234) }
-  let(:datos_realizar_oferta) { DatosRealizarOferta.new(1234, 'ABC123', 30_000) }
 
   context('when registrar') do
     it 'deberia registrar un usuario' do
@@ -280,6 +279,8 @@ describe 'SistemaFiubak' do
   end
 
   context('when realizar_oferta') do
+    let(:datos_realizar_oferta) { DatosRealizarOferta.new(1234, 'ABC123', 30_000) }
+
     it 'deberia realizar una oferta a un auto particular' do
       body = {
         id_oferta: 1,
@@ -307,6 +308,26 @@ describe 'SistemaFiubak' do
       expect do
         sistema_fiubak.realizar_oferta(datos_realizar_oferta)
       end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+    end
+  end
+
+  context('when rechazar_oferta') do
+    let(:datos_oferta_elegida) { DatosOfertaElegida.new(1) }
+
+    it 'deberia rechazar una oferta' do
+      body = {
+        id_oferta: 1,
+        id_ofertante: 4567,
+        patente: 'ABC123',
+        precio: 30_000,
+        estado: 'Rechazada'
+      }
+
+      MockeadorEndpoints.new.mockear_post(rechazar_oferta_url(1), 200, body)
+
+      res = sistema_fiubak.rechazar_oferta(datos_oferta_elegida)
+      esperado = RespuestaRealizarOferta.new(1, 4567, 'ABC123', 30_000, 'Rechazada')
+      expect(res).to eq(esperado)
     end
   end
 end
