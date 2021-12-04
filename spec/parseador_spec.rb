@@ -198,4 +198,13 @@ describe 'Parseador' do
 
     expect(datos).to eq(esperado)
   end
+
+  it 'parsear_oferta_elegida levanta ErrorParseo cuando la cantidad de argumentos es distinta de 1' do
+    id_oferta = 123
+    argumentos = "#{id_oferta},100"
+
+    expect  do
+      Parseador.new.parsear_oferta_elegida(argumentos)
+    end.to raise_error(ErrorParseo)
+  end
 end
