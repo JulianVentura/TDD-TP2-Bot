@@ -523,4 +523,26 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  context 'when /realizar_oferta' do
+    xit 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      body = {
+        id_oferta: 1,
+        id_ofertante: 456,
+        patente: 'ABC123'
+
+      }
+
+      MockeadorEndpoints.new.mockear_post(realizar_oferta_url('ABC123'), 200, body)
+
+      when_i_send_text(token, '/realizar_oferta ABC123, 30000')
+      then_i_get_text(token, 'Has realizado con exito la oferta al auto de patente ABC123 con un precio de 30000, identificador de oferta 1')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
 end
