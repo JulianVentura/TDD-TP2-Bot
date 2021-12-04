@@ -285,14 +285,15 @@ describe 'SistemaFiubak' do
         id_oferta: 1,
         id_ofertante: 4567,
         patente: 'ABC123',
-        precio: 30_000
+        precio: 30_000,
+        estado: 'Pendiente'
       }
 
       MockeadorEndpoints.new.mockear_post(realizar_oferta_url('ABC123'), 200, body)
 
       res = sistema_fiubak.realizar_oferta(datos_realizar_oferta)
       # TODO: definir que devuelve una oferta exitosa
-      esperado = RespuestaRealizarOferta.new(1, 4567, 'ABC123', 30_000)
+      esperado = RespuestaRealizarOferta.new(1, 4567, 'ABC123', 30_000, 'Pendiente')
       expect(res).to eq(esperado)
     end
 

@@ -5,8 +5,9 @@ describe 'RespuestaRealizarOferta' do
     id_ofertante = 4567
     patente = 'ABC123'
     precio = 500
-    respuesta1 = RespuestaRealizarOferta.new(id_oferta, id_ofertante, patente, precio)
-    respuesta2 = RespuestaRealizarOferta.new(id_oferta, id_ofertante, patente, precio)
+    estado = 'Pendiente'
+    respuesta1 = RespuestaRealizarOferta.new(id_oferta, id_ofertante, patente, precio, estado)
+    respuesta2 = RespuestaRealizarOferta.new(id_oferta, id_ofertante, patente, precio, estado)
     expect(respuesta1).to eq respuesta2
   end
 end

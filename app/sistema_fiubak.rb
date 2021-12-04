@@ -131,6 +131,6 @@ class SistemaFiubak
 
     raise ErrorApi, respuesta_json['error'] unless respuesta.status == 200
 
-    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'])
+    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
   end
 end
