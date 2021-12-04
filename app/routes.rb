@@ -127,6 +127,8 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id,
                          text: "Has rechazado la oferta #{respuesta.id_oferta}")
+  rescue ErrorParseo
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /rechazar_oferta <ID_oferta>')
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
