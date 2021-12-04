@@ -264,5 +264,17 @@ describe 'SistemaFiubak' do
       esperado = FabricaRespuestaAuto.new.crear('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Vendido', false, 30_000)
       expect(res).to eq(esperado)
     end
+
+    it 'deberia fallar si llega un error en publicar un auto p2p' do
+      body = {
+        error: 'Error: ocurrio un error'
+      }
+
+      MockeadorEndpoints.new.mockear_post(comprar_a_fiubak_url('ABC123'), 400, body)
+
+      expect do
+        sistema_fiubak.comprar(datos_compraventa_fiubak)
+      end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+    end
   end
 end
