@@ -89,6 +89,8 @@ class Routes
     respuesta = SistemaFiubak.new.publicar_p2p(datos_auto)
     # TODO: agregar manejo de errores
     bot.api.send_message(chat_id: message.chat.id, text: "Se ha publicado exitosamente tu vehiculo de patente #{respuesta.patente} a precio #{respuesta.precio}")
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
   on_message '/version' do |bot, message|

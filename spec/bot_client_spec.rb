@@ -411,8 +411,25 @@ describe 'BotClient' do
 
       MockeadorEndpoints.new.mockear_post('/autos/ABC123/publicar_p2p', 200, body)
 
-      when_i_send_text(token, '/publicar_p2p ABC123')
+      when_i_send_text(token, '/publicar_p2p ABC123, 30000')
       then_i_get_text(token, 'Se ha publicado exitosamente tu vehiculo de patente ABC123 a precio 30000')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+
+    it 'deberia responder con error en caso de haber un error' do
+      token = 'fake_token'
+
+      body = {
+        error: 'Hubo un error en la API'
+      }
+
+      MockeadorEndpoints.new.mockear_post('/autos/ABC123/publicar_p2p', 400, body)
+
+      when_i_send_text(token, '/publicar_p2p ABC123, 30000')
+      then_i_get_text(token, 'Hubo un error en la API')
 
       app = BotClient.new(token)
 
