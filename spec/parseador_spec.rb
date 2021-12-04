@@ -138,4 +138,14 @@ describe 'Parseador' do
 
     expect(datos).to eq(esperado)
   end
+
+  it 'parsear_vender_a_fiubak levanta ErrorParseo cuando la cantidad de argumentos es menor a 2' do
+    patente = 'ABC123'
+    id = 123
+    argumentos = patente.to_s
+
+    expect  do
+      Parseador.new.parsear_publicar_p2p(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end
