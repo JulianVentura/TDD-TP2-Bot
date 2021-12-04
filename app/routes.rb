@@ -114,6 +114,8 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id,
                          text: "Has realizado con exito la oferta numero #{respuesta.id_oferta} al auto de patente #{respuesta.patente} con un precio de #{respuesta.precio}")
+  rescue ErrorParseo
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /realizar_oferta <patente>, <precio_oferta>')
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
