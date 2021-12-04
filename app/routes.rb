@@ -96,11 +96,11 @@ class Routes
   end
 
   on_message_pattern %r{/comprar( (?<argumentos>.*)|$)} do |bot, message, args|
-    datos_auto = Parseador.new.parsear_compraventa_a_fiubak(args['argumentos'], message.chat.id)
+    datos_compra = Parseador.new.parsear_compraventa_a_fiubak(args['argumentos'], message.chat.id)
 
-    respuesta = SistemaFiubak.new.publicar_p2p(datos_auto)
+    respuesta = SistemaFiubak.new.comprar(datos_compra)
     # TODO: agregar manejo de errores
-    bot.api.send_message(chat_id: message.chat.id, text: "Has comprado a fiubak el vehiculo de patente #{respuesta.patente} por un precio de #{respuesta.precio}")
+    bot.api.send_message(chat_id: message.chat.id, text: "Has comprado a fiubak el auto de patente #{respuesta.patente} por un precio de #{respuesta.precio}")
   end
 
   on_message '/version' do |bot, message|
