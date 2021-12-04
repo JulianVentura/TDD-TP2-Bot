@@ -120,6 +120,19 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
+  on_message_pattern %r{/rechazar_oferta( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_oferta_elegida = Parseador.new.parsear_oferta_elegida(args['argumentos'], message.chat.id)
+
+    respuesta = SistemaFiubak.new.rechazar_oferta(datos_oferta_elegida)
+
+    bot.api.send_message(chat_id: message.chat.id,
+                         text: "Has rechazado la oferta #{respuesta.id_oferta}")
+  rescue ErrorParseo
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /rechazar_oferta <ID_oferta>')
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end

@@ -312,7 +312,7 @@ describe 'SistemaFiubak' do
   end
 
   context('when rechazar_oferta') do
-    let(:datos_oferta_elegida) { DatosOfertaElegida.new(1) }
+    let(:datos_oferta_elegida) { DatosOfertaElegida.new(123, 1) }
 
     it 'deberia rechazar una oferta' do
       body = {

@@ -56,14 +56,14 @@ class Parseador
     DatosRealizarOferta.new(id, argumentos[0].strip, argumentos[1].to_i)
   end
 
-  def parsear_oferta_elegida(argumentos)
+  def parsear_oferta_elegida(argumentos, id)
     tiene_argumentos?(argumentos)
 
     argumentos = argumentos.split(',')
 
     raise ErrorParseo if argumentos.size != 1
 
-    DatosOfertaElegida.new(argumentos[0].to_i)
+    DatosOfertaElegida.new(id, argumentos[0].to_i)
   end
 
   private

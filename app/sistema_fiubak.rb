@@ -113,7 +113,7 @@ class SistemaFiubak
   end
 
   def rechazar_oferta(datos_oferta_elegida)
-    endpoint = "/ofertas/#{datos_oferta_elegida.id_oferta}/rechazar_oferta"
+    endpoint = "/ofertas/#{datos_oferta_elegida.id_oferta}/rechazar"
     body = { id_oferta: datos_oferta_elegida.id_oferta }
     respuesta = realizar_post(endpoint, body)
     # TODO: POST o PATCH?

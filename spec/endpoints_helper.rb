@@ -23,7 +23,7 @@ def realizar_oferta_url(patente)
 end
 
 def rechazar_oferta_url(id_oferta)
-  "/ofertas/#{id_oferta}/rechazar_oferta"
+  "/ofertas/#{id_oferta}/rechazar"
 end
 
 def listar_autos_url

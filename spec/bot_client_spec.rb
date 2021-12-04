@@ -575,4 +575,57 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  context 'when /rechazar_oferta' do
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      body = {
+        id_oferta: 1,
+        id_ofertante: 4567,
+        patente: 'ABC123',
+        precio: 30_000,
+        estado: 'Rechazada'
+      }
+
+      MockeadorEndpoints.new.mockear_post(rechazar_oferta_url(1), 200, body)
+
+      when_i_send_text(token, '/rechazar_oferta 1')
+      then_i_get_text(token, 'Has rechazado la oferta 1')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+
+    it 'deberia responder con error en caso de haber un error' do
+      token = 'fake_token'
+
+      body = {
+        error: 'Hubo un error en la API'
+      }
+
+      MockeadorEndpoints.new.mockear_post(rechazar_oferta_url(1), 400, body)
+
+      when_i_send_text(token, '/rechazar_oferta 1')
+      then_i_get_text(token, 'Hubo un error en la API')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+
+    it 'deberia responder a "/rechazar_oferta" con mensaje de ayuda' do
+      token = 'fake_token'
+
+      mensaje_error = 'Error: El uso del comando es /rechazar_oferta <ID_oferta>'
+
+      when_i_send_text(token, '/rechazar_oferta')
+      then_i_get_text(token, mensaje_error)
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
 end
