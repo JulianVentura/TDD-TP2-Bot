@@ -2,7 +2,7 @@ require 'spec_helper'
 require './app/parseador'
 require './app/errores/error_parseo'
 require './app/datos/datos_auto'
-require './app/datos/datos_venta_fiubak'
+require './app/datos/datos_compra_venta_fiubak'
 
 describe 'Parseador' do
   it 'parsear_registro devuelve un DatosRegistro con los datos parseados' do
@@ -100,7 +100,7 @@ describe 'Parseador' do
     patente = 'ABC123'
     id = 123
     argumentos = patente.to_s
-    esperado = DatosVentaFiubak.new(patente, id)
+    esperado = DatosCompraVentaFiubak.new(patente, id)
 
     datos = Parseador.new.parsear_vender_a_fiubak(argumentos, id)
 

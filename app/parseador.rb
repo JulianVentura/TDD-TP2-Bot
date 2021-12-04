@@ -1,6 +1,6 @@
 require './app/datos/datos_registro'
 require './app/datos/datos_auto'
-require './app/datos/datos_venta_fiubak'
+require './app/datos/datos_compra_venta_fiubak'
 require './app/datos/datos_publicar_p2p'
 require './app/errores/error_parseo'
 
@@ -32,7 +32,7 @@ class Parseador
 
     raise ErrorParseo if argumentos.size != 1
 
-    DatosVentaFiubak.new(argumentos[0].strip, id)
+    DatosCompraVentaFiubak.new(argumentos[0].strip, id)
   end
 
   def parsear_publicar_p2p(argumentos, id)

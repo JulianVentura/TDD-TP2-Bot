@@ -21,3 +21,7 @@ end
 def listar_autos_url
   '/autos'
 end
+
+def comprar_a_fiubak_url(patente)
+  "/autos/#{patente}/comprar"
+end
