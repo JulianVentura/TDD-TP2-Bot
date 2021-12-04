@@ -14,6 +14,7 @@ describe 'SistemaFiubak' do
   let(:datos_auto) { DatosAuto.new('Fiat Uno', 'ABC123', 10_000, 1990, 1234) }
   let(:datos_p2p) { DatosPublicarP2P.new('ABC123', 1234, 30_000) }
   let(:datos_compraventa_fiubak) { DatosCompraVentaFiubak.new('ABC123', 1234) }
+  let(:datos_realizar_oferta) { DatosRealizarOferta.new('ABC123', 1234, 30_000) }
 
   context('when registrar') do
     it 'deberia registrar un usuario' do
@@ -274,6 +275,39 @@ describe 'SistemaFiubak' do
 
       expect do
         sistema_fiubak.comprar(datos_compraventa_fiubak)
+      end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+    end
+  end
+
+  context('when realizar_oferta') do
+    xit 'deberia realizar una oferta a un auto particular' do
+      body = {
+        patente: 'ABC123',
+        modelo: 'Fiat Uno',
+        kilometros: 10_000,
+        anio: 1990,
+        id_prop: 1234,
+        estado: 'Publicado',
+        precio: 30_000,
+        es_fiubak: false
+      }
+
+      MockeadorEndpoints.new.mockear_post(realizar_oferta_url('ABC123'), 200, body)
+
+      res = sistema_fiubak.publicar_p2p(datos_realizar_oferta)
+      esperado = FabricaRespuestaAuto.new.crear('ABC123', 'Fiat Uno', 10_000, 1990, 1234, 'Publicado', false, 30_000)
+      expect(res).to eq(esperado)
+    end
+
+    xit 'deberia fallar si llega un error en publicar un auto p2p' do
+      body = {
+        error: 'Error: ocurrio un error'
+      }
+
+      MockeadorEndpoints.new.mockear_post(publicar_p2p_url('ABC123'), 400, body)
+
+      expect do
+        sistema_fiubak.publicar_p2p(datos_p2p)
       end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
     end
   end

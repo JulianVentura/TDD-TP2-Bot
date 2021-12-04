@@ -18,6 +18,10 @@ def publicar_p2p_url(patente)
   "/autos/#{patente}/publicar_p2p"
 end
 
+def realizar_oferta_url(patente)
+  "/autos/#{patente}/realizar_oferta"
+end
+
 def listar_autos_url
   '/autos'
 end
