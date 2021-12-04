@@ -246,7 +246,7 @@ describe 'SistemaFiubak' do
   end
 
   context('when comprar') do
-    xit 'deberia comprar un auto a fiubak' do
+    it 'deberia comprar un auto a fiubak' do
       body = {
         patente: 'ABC123',
         modelo: 'Fiat Uno',
