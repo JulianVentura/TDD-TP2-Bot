@@ -56,6 +56,12 @@ class Parseador
     DatosRealizarOferta.new(id, argumentos[0].strip, argumentos[1].to_i)
   end
 
+  def parsear_oferta_elegida(argumentos)
+    argumentos = argumentos.split(',')
+
+    DatosOfertaElegida.new(argumentos[0].to_i)
+  end
+
   private
 
   def tiene_argumentos?(argumentos)

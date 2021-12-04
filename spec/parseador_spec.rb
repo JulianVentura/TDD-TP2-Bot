@@ -188,4 +188,14 @@ describe 'Parseador' do
       Parseador.new.parsear_realizar_oferta(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_oferta_elegida devuelve un DatosOfertaElegida con los datos parseados' do
+    id_oferta = 123
+    argumentos = id_oferta.to_s
+    esperado = DatosOfertaElegida.new(id_oferta)
+
+    datos = Parseador.new.parsear_oferta_elegida(argumentos)
+
+    expect(datos).to eq(esperado)
+  end
 end
