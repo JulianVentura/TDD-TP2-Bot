@@ -128,7 +128,7 @@ class SistemaFiubak
     params = { id_prop: datos_consultar_ofertas_recibidas.id_prop }
     respuesta = realizar_get(endpoint, params)
 
-    respuesta_json = JSON.parse(respuesta.body)
+    respuesta_json = parsear_json(respuesta, 200)
     ofertas = []
 
     respuesta_json.each do |oferta|
