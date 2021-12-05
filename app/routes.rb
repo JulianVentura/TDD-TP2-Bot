@@ -143,6 +143,9 @@ class Routes
       # TODO: revisar la parte de fiubak
       mensaje += "\n" unless index == respuesta.size - 1
     end
+
+    mensaje = "No se han recibido ofertas sobre el auto de patente #{datos_oferta.patente}" if mensaje.empty?
+
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)

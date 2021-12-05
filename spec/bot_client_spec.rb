@@ -650,6 +650,21 @@ describe 'BotClient' do
       app.run_once
     end
 
+    it 'deberia responder con "No se han recibido ofertas"' do
+      token = 'fake_token'
+
+      params = { id_prop: CHAT_ID }
+      body = []
+
+      MockeadorEndpoints.new.mockear_get(consultar_ofertas_recibidas_url(patente), 200, body, params)
+
+      when_i_send_text(token, '/consultar_ofertas_recibidas ABC123')
+      then_i_get_text(token, "No se han recibido ofertas sobre el auto de patente #{patente}")
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+
     it 'deberia responder con error en caso de haber un error' do
       token = 'fake_token'
 

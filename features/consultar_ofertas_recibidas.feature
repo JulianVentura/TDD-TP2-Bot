@@ -16,7 +16,7 @@ Característica: Consultar ofertas recibidas
   Escenario: CORV2 - Consulta de ofertas recibidas sin ofertas
     Dado que tengo un auto modelo "Fiat Uno", patente "DHG456", kilometros 100000 y año 1999
     Cuando ingreso el comando "/consultar_ofertas_recibidas DHG456"
-    Entonces recibo el mensaje "No hay ofertas"
+    Entonces recibo el mensaje "No se han recibido ofertas sobre el auto de patente DHG456"
 
   Escenario: CORV3 - Consulta de ofertas fallida por auto inexistente
     Dado que tengo un auto modelo "Fiat Uno", patente "DHG456", kilometros 100000 y año 1999
