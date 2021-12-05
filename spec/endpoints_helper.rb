@@ -33,3 +33,7 @@ end
 def comprar_a_fiubak_url(patente)
   "/autos/#{patente}/comprar"
 end
+
+def consultar_ofertas_recibidas_url(patente)
+  "/autos/#{patente}/ofertas"
+end
