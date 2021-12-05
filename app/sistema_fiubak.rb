@@ -109,7 +109,7 @@ class SistemaFiubak
 
     respuesta_json = parsear_json(respuesta, 200)
 
-    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
+    RespuestaOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
   end
 
   def rechazar_oferta(datos_oferta_elegida)
@@ -120,7 +120,22 @@ class SistemaFiubak
 
     respuesta_json = parsear_json(respuesta, 200)
 
-    RespuestaRealizarOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
+    RespuestaOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
+  end
+
+  def consultar_ofertas_recibidas(datos_consultar_ofertas_recibidas)
+    endpoint = "/autos/#{datos_consultar_ofertas_recibidas.patente}/ofertas"
+    params = { id_prop: datos_consultar_ofertas_recibidas.id_prop }
+    respuesta = realizar_get(endpoint, params)
+
+    respuesta_json = JSON.parse(respuesta.body)
+    ofertas = []
+
+    respuesta_json.each do |oferta|
+      ofertas.append(RespuestaOferta.new(oferta['id_oferta'],
+                                         oferta['id_ofertante'], oferta['patente'], oferta['precio'], oferta['estado']))
+    end
+    ofertas
   end
 
   private
@@ -136,6 +151,12 @@ class SistemaFiubak
   def realizar_post(endpoint, body)
     @servicio.post(endpoint) do |req|
       req.body = body.to_json
+    end
+  end
+
+  def realizar_get(endpoint, params)
+    @servicio.get(endpoint) do |req|
+      req.params = params unless params.nil?
     end
   end
 end

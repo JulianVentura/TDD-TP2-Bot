@@ -1,4 +1,4 @@
-class RespuestaRealizarOferta
+class RespuestaOferta
   def initialize(id_oferta, id_ofertante, patente, precio, estado)
     @id_oferta = id_oferta
     @id_ofertante = id_ofertante

@@ -294,7 +294,7 @@ describe 'SistemaFiubak' do
 
       res = sistema_fiubak.realizar_oferta(datos_realizar_oferta)
       # TODO: definir que devuelve una oferta exitosa
-      esperado = RespuestaRealizarOferta.new(1, 4567, 'ABC123', 30_000, 'Pendiente')
+      esperado = RespuestaOferta.new(1, 4567, 'ABC123', 30_000, 'Pendiente')
       expect(res).to eq(esperado)
     end
 
@@ -326,7 +326,7 @@ describe 'SistemaFiubak' do
       MockeadorEndpoints.new.mockear_post(rechazar_oferta_url(1), 200, body)
 
       res = sistema_fiubak.rechazar_oferta(datos_oferta_elegida)
-      esperado = RespuestaRealizarOferta.new(1, 4567, 'ABC123', 30_000, 'Rechazada')
+      esperado = RespuestaOferta.new(1, 4567, 'ABC123', 30_000, 'Rechazada')
       expect(res).to eq(esperado)
     end
 
@@ -340,6 +340,30 @@ describe 'SistemaFiubak' do
       expect do
         sistema_fiubak.rechazar_oferta(datos_oferta_elegida)
       end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+    end
+  end
+
+  context('when consultar_ofertas_recibidas') do
+    let(:patente) { 'ABC123' }
+    let(:id_prop) { 123 }
+    let(:datos_consultar_ofertas) { DatosConsultarOfertasRecibidas.new(patente, id_prop) }
+
+    it 'deberia listar las ofertas recibidas' do
+      oferta = {
+        id_oferta: 1,
+        id_ofertante: 4567,
+        patente: patente,
+        precio: 30_000,
+        estado: 'Rechazada'
+      }
+      params = { id_prop: id_prop }
+      body = [oferta]
+
+      MockeadorEndpoints.new.mockear_get(consultar_ofertas_recibidas_url('ABC123'), 200, body, params)
+
+      res = sistema_fiubak.consultar_ofertas_recibidas(datos_consultar_ofertas)
+      esperado = [RespuestaOferta.new(1, 4567, 'ABC123', 30_000, 'Rechazada')]
+      expect(res).to eq(esperado)
     end
   end
 end
