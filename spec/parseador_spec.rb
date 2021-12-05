@@ -237,4 +237,12 @@ describe 'Parseador' do
       Parseador.new.parsear_consultar_ofertas_recibidas(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_consultar_ofertas_realizadas devuelve un DatosConsultarOfertasRealizadas con los datos parseados' do
+    id = 123
+    esperado = DatosConsultarOfertasRealizadas.new(id)
+    datos = Parseador.new.parsear_consultar_ofertas_realizadas(id)
+
+    expect(datos).to eq(esperado)
+  end
 end

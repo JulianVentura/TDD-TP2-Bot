@@ -78,6 +78,10 @@ class Parseador
     DatosConsultarOfertasRecibidas.new(argumentos[0], id)
   end
 
+  def parsear_consultar_ofertas_realizadas(id)
+    DatosConsultarOfertasRealizadas.new(id)
+  end
+
   private
 
   def tiene_argumentos?(argumentos)
