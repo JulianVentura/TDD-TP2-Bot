@@ -133,6 +133,19 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
+  on_message_pattern %r{/consultar_ofertas_recibidas( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_oferta = Parseador.new.parsear_consultar_ofertas_recibidas(args['argumentos'], message.chat.id)
+    respuesta = SistemaFiubak.new.consultar_ofertas_recibidas(datos_oferta)
+    mensaje = ''
+
+    respuesta.each_with_index do |oferta, index|
+      mensaje += "##{1 + index} #{oferta.id_oferta}, #{oferta.patente}, $#{oferta.precio}"
+      # TODO: revisar la parte de fiubak
+      mensaje += "\n" unless index == respuesta.size - 1
+    end
+    bot.api.send_message(chat_id: message.chat.id, text: mensaje)
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end

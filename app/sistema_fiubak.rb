@@ -1,7 +1,7 @@
 require_relative './respuestas/respuesta_registro'
 require_relative './respuestas/respuesta_auto'
 require_relative './respuestas/fabrica_respuesta_auto'
-require_relative './respuestas/respuesta_realizar_oferta'
+require_relative './respuestas/respuesta_oferta'
 require './app/errores/error_api'
 
 class SistemaFiubak

@@ -622,7 +622,29 @@ describe 'BotClient' do
 
       when_i_send_text(token, '/rechazar_oferta')
       then_i_get_text(token, mensaje_error)
+    end
+  end
 
+  context 'when /consultar_ofertas_recibidas' do
+    let(:patente) { 'ABC123' }
+
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      oferta = {
+        id_oferta: 123,
+        id_ofertante: 4567,
+        patente: patente,
+        precio: 50_000,
+        estado: 'Rechazada'
+      }
+      params = { id_prop: CHAT_ID }
+      body = [oferta]
+
+      MockeadorEndpoints.new.mockear_get(consultar_ofertas_recibidas_url(patente), 200, body, params)
+
+      when_i_send_text(token, '/consultar_ofertas_recibidas ABC123')
+      then_i_get_text(token, '#1 123, ABC123, $50000')
       app = BotClient.new(token)
 
       app.run_once

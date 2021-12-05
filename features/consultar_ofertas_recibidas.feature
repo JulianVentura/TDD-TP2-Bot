@@ -11,7 +11,7 @@ Característica: Consultar ofertas recibidas
   Escenario: CORV1 - Consulta de ofertas recibidas con una oferta
     Dado que realizaron una oferta a mi auto de patente ABC123 con oferta 50000 e id_oferta 123
     Cuando ingreso el comando "/consultar_ofertas_recibidas ABC123"
-    Entonces recibo el mensaje "#1 123, ABC123, 50000"
+    Entonces recibo el mensaje "#1 123, ABC123, $50000"
 
   Escenario: CORV2 - Consulta de ofertas recibidas sin ofertas
     Dado que tengo un auto modelo "Fiat Uno", patente "DHG456", kilometros 100000 y año 1999

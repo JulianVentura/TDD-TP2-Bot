@@ -1,4 +1,4 @@
-require './app/respuestas/respuesta_realizar_oferta'
+require './app/respuestas/respuesta_oferta'
 describe 'RespuestaOferta' do
   it 'deberian ser iguales' do
     id_oferta = 1
