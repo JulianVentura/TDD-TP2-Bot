@@ -218,4 +218,14 @@ describe 'Parseador' do
       Parseador.new.parsear_oferta_elegida(argumentos, id)
     end.to raise_error(ErrorParseo)
   end
+
+  it 'parsear_consultar_ofertas_recibidas devuelve un DatosConsultarOfertasRecibidas con los datos parseados' do
+    patente = 'ABC123'
+    id = 123
+    argumentos = patente.to_s
+    esperado = DatosConsultarOfertasRecibidas.new(patente, id)
+    datos = Parseador.new.parsear_consultar_ofertas_recibidas(argumentos, id)
+
+    expect(datos).to eq(esperado)
+  end
 end

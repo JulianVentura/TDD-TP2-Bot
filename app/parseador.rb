@@ -66,6 +66,16 @@ class Parseador
     DatosOfertaElegida.new(id, argumentos[0].to_i)
   end
 
+  def parsear_consultar_ofertas_recibidas(argumentos, id)
+    tiene_argumentos?(argumentos)
+
+    argumentos = argumentos.split(',')
+
+    raise ErrorParseo if argumentos.size != 1
+
+    DatosConsultarOfertasRecibidas.new(argumentos[0], id)
+  end
+
   private
 
   def tiene_argumentos?(argumentos)
