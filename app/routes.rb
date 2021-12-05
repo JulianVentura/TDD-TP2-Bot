@@ -139,7 +139,7 @@ class Routes
     mensaje = ''
 
     respuesta.each_with_index do |oferta, index|
-      mensaje += "##{1 + index} #{oferta.id_oferta}, #{oferta.patente}, $#{oferta.precio}"
+      mensaje += "##{oferta.id_oferta} #{oferta.patente}, $#{oferta.precio}, #{oferta.estado}"
       # TODO: revisar la parte de fiubak
       mensaje += "\n" unless index == respuesta.size - 1
     end

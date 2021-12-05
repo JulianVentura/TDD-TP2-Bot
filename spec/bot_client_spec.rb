@@ -644,7 +644,7 @@ describe 'BotClient' do
       MockeadorEndpoints.new.mockear_get(consultar_ofertas_recibidas_url(patente), 200, body, params)
 
       when_i_send_text(token, '/consultar_ofertas_recibidas ABC123')
-      then_i_get_text(token, '#1 123, ABC123, $50000')
+      then_i_get_text(token, '#123 ABC123, $50000, Rechazada')
       app = BotClient.new(token)
 
       app.run_once

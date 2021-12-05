@@ -20,3 +20,12 @@ Característica: Rechazar oferta
   Escenario: RO3 -  Rechazo de oferta fallida por falta de datos
     Cuando ingreso el comando "/rechazar_oferta"
     Entonces recibo mensaje de error por falta de datos
+
+  Escenario: RO4 -  Rechazo de oferta fallida por id no coincidente
+    Cuando otro usuario ingresa el comando "/rechazar_oferta 995"
+    Entonces recibo mensaje de error por id no coincidente
+
+  Escenario: RO5 -  Rechazo de oferta fallida por rechazar multiples veces
+    Dado ingreso el comando "/rechazar_oferta 995"
+    Cuando ingreso el comando "/rechazar_oferta 995"
+    Entonces recibo mensaje de error por oferta no pendiente
