@@ -228,4 +228,13 @@ describe 'Parseador' do
 
     expect(datos).to eq(esperado)
   end
+
+  it 'parsear_consultar_ofertas_recibidas levanta ErrorParseo cuando la cantidad de argumentos es distinta de 1' do
+    id = 123
+    argumentos = ''
+
+    expect  do
+      Parseador.new.parsear_consultar_ofertas_recibidas(argumentos, id)
+    end.to raise_error(ErrorParseo)
+  end
 end
