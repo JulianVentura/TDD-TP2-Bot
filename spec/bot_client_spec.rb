@@ -683,5 +683,16 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'deberia responder con mensaje de ayuda' do
+      token = 'fake_token'
+
+      when_i_send_text(token, '/consultar_ofertas_recibidas')
+      then_i_get_text(token, 'Error: El uso del comando es /consultar_ofertas_recibidas <patente>')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end

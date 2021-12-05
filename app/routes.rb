@@ -147,6 +147,8 @@ class Routes
     mensaje = "No se han recibido ofertas sobre el auto de patente #{datos_oferta.patente}" if mensaje.empty?
 
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
+  rescue ErrorParseo
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /consultar_ofertas_recibidas <patente>')
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
