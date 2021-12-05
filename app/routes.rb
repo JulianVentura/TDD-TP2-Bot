@@ -144,6 +144,8 @@ class Routes
       mensaje += "\n" unless index == respuesta.size - 1
     end
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
+  rescue ErrorApi => e
+    bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
   on_message '/version' do |bot, message|
