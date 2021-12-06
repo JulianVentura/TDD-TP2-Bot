@@ -775,5 +775,22 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'deberia responder con error en caso de haber un error' do
+      token = 'fake_token'
+
+      body = {
+        error: 'Hubo un error en la API'
+      }
+
+      MockeadorEndpoints.new.mockear_post(aceptar_oferta_url(id_oferta), 400, body)
+
+      when_i_send_text(token, "/aceptar_oferta #{id_oferta}")
+      then_i_get_text(token, 'Hubo un error en la API')
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end
