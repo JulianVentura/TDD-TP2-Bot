@@ -400,5 +400,17 @@ describe 'SistemaFiubak' do
       esperado = [RespuestaOferta.new(1, 4567, 'ABC123', 30_000, 'Rechazada')]
       expect(res).to eq(esperado)
     end
+
+    it 'deberia fallar si llega un error' do
+      body = {
+        error: 'Error: ocurrio un error'
+      }
+
+      MockeadorEndpoints.new.mockear_get(consultar_ofertas_realizadas_url(id_usuario), 400, body)
+
+      expect do
+        sistema_fiubak.consultar_ofertas_realizadas(datos_consultar_ofertas)
+      end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
+    end
   end
 end
