@@ -138,6 +138,20 @@ class SistemaFiubak
     ofertas
   end
 
+  def consultar_ofertas_realizadas(datos_consultar_ofertas_realizadas)
+    endpoint = "/usuarios/#{datos_consultar_ofertas_realizadas.id_usuario}/ofertas"
+    respuesta = realizar_get(endpoint)
+
+    respuesta_json = parsear_json(respuesta, 200)
+    ofertas = []
+
+    respuesta_json.each do |oferta|
+      ofertas.append(RespuestaOferta.new(oferta['id_oferta'],
+                                         oferta['id_ofertante'], oferta['patente'], oferta['precio'], oferta['estado']))
+    end
+    ofertas
+  end
+
   private
 
   def parsear_json(respuesta, codigo)
@@ -154,7 +168,7 @@ class SistemaFiubak
     end
   end
 
-  def realizar_get(endpoint, params)
+  def realizar_get(endpoint, params = nil)
     @servicio.get(endpoint) do |req|
       req.params = params unless params.nil?
     end

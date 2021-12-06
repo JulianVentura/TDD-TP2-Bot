@@ -37,3 +37,7 @@ end
 def consultar_ofertas_recibidas_url(patente)
   "/autos/#{patente}/ofertas"
 end
+
+def consultar_ofertas_realizadas_url(id_usuario)
+  "/usuarios/#{id_usuario}/ofertas"
+end

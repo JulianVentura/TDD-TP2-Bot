@@ -378,4 +378,27 @@ describe 'SistemaFiubak' do
       end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
     end
   end
+
+  context('when consultar_ofertas_realizadas') do
+    let(:id_usuario) { 123 }
+    let(:datos_consultar_ofertas) { DatosConsultarOfertasRealizadas.new(id_usuario) }
+
+    it 'deberia listar las ofertas realizadas' do
+      oferta = {
+        id_oferta: 1,
+        id_ofertante: 4567,
+        patente: 'ABC123',
+        precio: 30_000,
+        estado: 'Rechazada'
+      }
+
+      body = [oferta]
+
+      MockeadorEndpoints.new.mockear_get(consultar_ofertas_realizadas_url(id_usuario), 200, body)
+
+      res = sistema_fiubak.consultar_ofertas_realizadas(datos_consultar_ofertas)
+      esperado = [RespuestaOferta.new(1, 4567, 'ABC123', 30_000, 'Rechazada')]
+      expect(res).to eq(esperado)
+    end
+  end
 end
