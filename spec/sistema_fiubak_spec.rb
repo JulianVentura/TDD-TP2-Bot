@@ -434,7 +434,7 @@ describe 'SistemaFiubak' do
       expect(res).to eq(esperado)
     end
 
-    it 'deberia fallar si llega un error en rechazar oferta' do
+    it 'deberia fallar si llega un error en aceptar oferta' do
       body = {
         error: 'Error: ocurrio un error'
       }

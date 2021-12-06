@@ -171,6 +171,15 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
+  on_message_pattern %r{/aceptar_oferta( (?<argumentos>.*)|$)} do |bot, message, args|
+    datos_oferta_elegida = Parseador.new.parsear_oferta_elegida(args['argumentos'], message.chat.id)
+
+    respuesta = SistemaFiubak.new.aceptar_oferta(datos_oferta_elegida)
+
+    bot.api.send_message(chat_id: message.chat.id,
+                         text: "Has aceptado la oferta #{respuesta.id_oferta}")
+  end
+
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
   end

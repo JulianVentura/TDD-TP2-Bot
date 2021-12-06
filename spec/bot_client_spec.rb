@@ -751,4 +751,29 @@ describe 'BotClient' do
       app.run_once
     end
   end
+
+  context 'when /aceptar_oferta' do
+    let(:id_oferta) { 1 }
+
+    it 'deberia responder exitosamente' do
+      token = 'fake_token'
+
+      body = {
+        id_oferta: id_oferta,
+        id_ofertante: 4567,
+        patente: 'ABC123',
+        precio: 30_000,
+        estado: 'Aceptada'
+      }
+
+      MockeadorEndpoints.new.mockear_post(aceptar_oferta_url(id_oferta), 200, body)
+
+      when_i_send_text(token, "/aceptar_oferta #{id_oferta}")
+      then_i_get_text(token, "Has aceptado la oferta #{id_oferta}")
+
+      app = BotClient.new(token)
+
+      app.run_once
+    end
+  end
 end
