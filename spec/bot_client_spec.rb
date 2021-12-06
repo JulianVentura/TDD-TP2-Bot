@@ -703,7 +703,7 @@ describe 'BotClient' do
       token = 'fake_token'
 
       oferta = {
-        id_oferta: 123,
+        id_oferta: 300,
         id_ofertante: 4567,
         patente: patente,
         precio: 50_000,
@@ -714,7 +714,7 @@ describe 'BotClient' do
       MockeadorEndpoints.new.mockear_get(consultar_ofertas_realizadas_url(CHAT_ID), 200, body)
 
       when_i_send_text(token, '/consultar_ofertas_realizadas')
-      then_i_get_text(token, '#1 ABC123, $50000, Rechazada')
+      then_i_get_text(token, '#300 ABC123, $50000, Rechazada')
       app = BotClient.new(token)
 
       app.run_once
