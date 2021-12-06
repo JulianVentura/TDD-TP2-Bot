@@ -164,6 +164,8 @@ class Routes
       mensaje += "\n" unless index == respuesta.size - 1
     end
 
+    mensaje = 'No se han realizado ofertas' if mensaje.empty?
+
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)

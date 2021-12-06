@@ -736,5 +736,19 @@ describe 'BotClient' do
 
       app.run_once
     end
+
+    it 'deberia responder con "No se han realizado ofertas"' do
+      token = 'fake_token'
+
+      body = []
+
+      MockeadorEndpoints.new.mockear_get(consultar_ofertas_realizadas_url(CHAT_ID), 200, body)
+
+      when_i_send_text(token, '/consultar_ofertas_realizadas')
+      then_i_get_text(token, 'No se han realizado ofertas')
+      app = BotClient.new(token)
+
+      app.run_once
+    end
   end
 end
