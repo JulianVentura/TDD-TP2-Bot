@@ -152,6 +152,17 @@ class SistemaFiubak
     ofertas
   end
 
+  def aceptar_oferta(datos_oferta_elegida)
+    endpoint = "/ofertas/#{datos_oferta_elegida.id_oferta}/aceptar"
+    body = { id_prop: datos_oferta_elegida.id_vendedor }
+    respuesta = realizar_post(endpoint, body)
+    # TODO: POST o PATCH?
+
+    respuesta_json = parsear_json(respuesta, 200)
+
+    RespuestaOferta.new(respuesta_json['id_oferta'], respuesta_json['id_ofertante'], respuesta_json['patente'], respuesta_json['precio'], respuesta_json['estado'])
+  end
+
   private
 
   def parsear_json(respuesta, codigo)

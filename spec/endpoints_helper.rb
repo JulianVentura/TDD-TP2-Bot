@@ -41,3 +41,7 @@ end
 def consultar_ofertas_realizadas_url(id_usuario)
   "/usuarios/#{id_usuario}/ofertas"
 end
+
+def aceptar_oferta_url(id_oferta)
+  "/ofertas/#{id_oferta}/aceptar"
+end

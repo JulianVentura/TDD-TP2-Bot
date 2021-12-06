@@ -413,4 +413,25 @@ describe 'SistemaFiubak' do
       end.to raise_error(an_instance_of(ErrorApi).and(having_attributes(mensaje: 'Error: ocurrio un error')))
     end
   end
+
+  context('when aceptar_oferta') do
+    let(:id_oferta) { 1 }
+    let(:datos_oferta_elegida) { DatosOfertaElegida.new(123, id_oferta) }
+
+    it 'deberia aceptar una oferta' do
+      body = {
+        id_oferta: id_oferta,
+        id_ofertante: 4567,
+        patente: 'ABC123',
+        precio: 30_000,
+        estado: 'Aceptada'
+      }
+
+      MockeadorEndpoints.new.mockear_post(aceptar_oferta_url(id_oferta), 200, body)
+
+      res = sistema_fiubak.aceptar_oferta(datos_oferta_elegida)
+      esperado = RespuestaOferta.new(id_oferta, 4567, 'ABC123', 30_000, 'Aceptada')
+      expect(res).to eq(esperado)
+    end
+  end
 end
