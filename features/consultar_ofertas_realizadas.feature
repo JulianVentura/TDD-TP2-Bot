@@ -12,4 +12,4 @@ Característica: Consultar ofertas realizadas
 
   Escenario: CORC2 - Consulta de ofertas realizadas sin ofertas
     Cuando ingreso el comando "/consultar_ofertas_realizadas"
-    Entonces recibo el mensaje "No tenes ninguna oferta realizada"
+    Entonces recibo el mensaje "No se han realizado ofertas"
