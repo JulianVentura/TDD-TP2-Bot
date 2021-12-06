@@ -7,7 +7,7 @@ Característica: Rechazar oferta
     Y que tiene un auto modelo "Fiat Uno", patente "ABC123", kilometros 100000 y año 1999
     Y se cotiza el auto de patente "ABC123" con precio 120000
     Y decide publicarlo como p2p
-    y comprador decide realizar una oferta con id_oferta 995
+    Y comprador decide realizar una oferta con id_oferta 995
 
   Escenario: RO1 - Rechazo de oferta exitoso
     Cuando ingreso el comando "/rechazar_oferta 995"

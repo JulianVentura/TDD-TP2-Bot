@@ -5,6 +5,7 @@ require './app/datos/datos_publicar_p2p'
 require './app/datos/datos_realizar_oferta'
 require './app/datos/datos_oferta_elegida'
 require './app/datos/datos_consultar_ofertas_recibidas'
+require './app/datos/datos_consultar_ofertas_realizadas'
 require './app/errores/error_parseo'
 
 class Parseador
