@@ -178,6 +178,8 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id,
                          text: "Has aceptado la oferta #{respuesta.id_oferta}")
+  rescue ErrorParseo
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /aceptar_oferta <id_oferta>')
   rescue ErrorApi => e
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
