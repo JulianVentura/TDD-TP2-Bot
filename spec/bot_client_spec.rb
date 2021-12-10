@@ -101,6 +101,17 @@ describe 'BotClient' do
     app.run_once
   end
 
+  it 'debería recibir un mensaje /ayuda y responder con la lista de comandos validos' do
+    token = 'fake_token'
+
+    when_i_send_text(token, '/ayuda')
+    then_i_get_text(token, Impresora.new.ayuda)
+
+    app = BotClient.new(token)
+
+    app.run_once
+  end
+
   it 'should get an unknown message message and respond with Do not understand' do
     token = 'fake_token'
 

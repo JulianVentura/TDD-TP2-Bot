@@ -4,6 +4,7 @@ require_relative './sistema_fiubak'
 require_relative './errores/error_api'
 require_relative './errores/error_parseo'
 require_relative './parseador'
+require_relative './impresora'
 
 class Routes
   include Routing
@@ -186,6 +187,10 @@ class Routes
 
   on_message '/version' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: Version.current)
+  end
+
+  on_message '/ayuda' do |bot, message|
+    bot.api.send_message(chat_id: message.chat.id, text: Impresora.new.ayuda)
   end
 
   default do |bot, message|
