@@ -23,11 +23,12 @@ class Routes # rubocop:disable Metrics/ClassLength
     respuesta = SistemaFiubak.new.registrar(datos_registro)
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido #{respuesta.nombre}")
 
+  rescue ErrorParseo
+    @@logger.error "[/registrar] Hubo un error: 'Error de parseo'"
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /registrar <nombre>,<email>')
   rescue ErrorApi => e
     @@logger.error "[/registrar] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
-  rescue ErrorParseo
-    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /registrar <nombre>,<email>')
   end
 
   on_message_pattern %r{/ingresar_auto( (?<argumentos>.*)|$)} do |bot, message, args|
@@ -36,11 +37,12 @@ class Routes # rubocop:disable Metrics/ClassLength
     respuesta = SistemaFiubak.new.ingresar_auto(datos_auto)
 
     bot.api.send_message(chat_id: message.chat.id, text: "Auto con patente #{respuesta.patente} ingresado al sistema")
+  rescue ErrorParseo
+    @@logger.error "[/ingresar_auto] Hubo un error: 'Error de parseo'"
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>')
   rescue ErrorApi => e
     @@logger.error "[/ingresar_auto] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
-  rescue ErrorParseo
-    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>')
   end
 
   on_message '/consultar_mis_autos' do |bot, message|
@@ -86,11 +88,12 @@ class Routes # rubocop:disable Metrics/ClassLength
     respuesta = SistemaFiubak.new.vender_a_fiubak(datos_auto)
 
     bot.api.send_message(chat_id: message.chat.id, text: "Se ha registrado la venta de tu vehiculo de patente #{respuesta.patente}")
+  rescue ErrorParseo
+    @@logger.error "[/vender_a_fiubak] Hubo un error: 'Error de parseo'"
+    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /vender_a_fiubak <patente>')
   rescue ErrorApi => e
     @@logger.error "[/vender_a_fiubak] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
-  rescue ErrorParseo
-    bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /vender_a_fiubak <patente>')
   end
 
   on_message_pattern %r{/publicar_p2p( (?<argumentos>.*)|$)} do |bot, message, args|
@@ -100,6 +103,7 @@ class Routes # rubocop:disable Metrics/ClassLength
 
     bot.api.send_message(chat_id: message.chat.id, text: "Se ha publicado exitosamente tu vehiculo de patente #{respuesta.patente} a precio #{respuesta.precio}")
   rescue ErrorParseo
+    @@logger.error "[/publicar_p2p] Hubo un error: 'Error de parseo'"
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /publicar_p2p <patente>, <precio>')
   rescue ErrorApi => e
     @@logger.error "[/publicar_p2p] Hubo un error: '#{e.mensaje}'"
@@ -113,6 +117,7 @@ class Routes # rubocop:disable Metrics/ClassLength
     # TODO: agregar manejo de errores
     bot.api.send_message(chat_id: message.chat.id, text: "Has comprado a fiubak el auto de patente #{respuesta.patente} por un precio de #{respuesta.precio}")
   rescue ErrorParseo
+    @@logger.error "[/comprar] Hubo un error: 'Error de parseo'"
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /comprar <patente>')
   rescue ErrorApi => e
     @@logger.error "[/comprar] Hubo un error: '#{e.mensaje}'"
@@ -127,6 +132,7 @@ class Routes # rubocop:disable Metrics/ClassLength
     bot.api.send_message(chat_id: message.chat.id,
                          text: "Has realizado con exito la oferta numero #{respuesta.id_oferta} al auto de patente #{respuesta.patente} con un precio de #{respuesta.precio}")
   rescue ErrorParseo
+    @@logger.error "[/realizar_oferta] Hubo un error: 'Error de parseo'"
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /realizar_oferta <patente>, <precio_oferta>')
   rescue ErrorApi => e
     @@logger.error "[/realizar_oferta] Hubo un error: '#{e.mensaje}'"
@@ -141,6 +147,7 @@ class Routes # rubocop:disable Metrics/ClassLength
     bot.api.send_message(chat_id: message.chat.id,
                          text: "Has rechazado la oferta #{respuesta.id_oferta}")
   rescue ErrorParseo
+    @@logger.error "[/rechazar_oferta] Hubo un error: 'Error de parseo'"
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /rechazar_oferta <ID_oferta>')
   rescue ErrorApi => e
     @@logger.error "[/rechazar_oferta] Hubo un error: '#{e.mensaje}'"
@@ -162,6 +169,7 @@ class Routes # rubocop:disable Metrics/ClassLength
 
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
   rescue ErrorParseo
+    @@logger.error "[/consultar_ofertas_recibidas] Hubo un error: 'Error de parseo'"
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /consultar_ofertas_recibidas <patente>')
   rescue ErrorApi => e
     @@logger.error "[/consultar_ofertas_recibidas] Hubo un error: '#{e.mensaje}'"
@@ -195,6 +203,7 @@ class Routes # rubocop:disable Metrics/ClassLength
     bot.api.send_message(chat_id: message.chat.id,
                          text: "Has aceptado la oferta #{respuesta.id_oferta}")
   rescue ErrorParseo
+    @@logger.error "[/aceptar_oferta] Hubo un error: 'Error de parseo'"
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /aceptar_oferta <id_oferta>')
   rescue ErrorApi => e
     @@logger.error "[/aceptar_oferta] Hubo un error: '#{e.mensaje}'"
