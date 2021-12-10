@@ -6,8 +6,12 @@ require_relative './errores/error_parseo'
 require_relative './parseador'
 require_relative './impresora'
 
-class Routes
+class Routes # rubocop:disable Metrics/ClassLength
   include Routing
+
+  def initialize(logger)
+    @@logger = logger # rubocop:disable Style/ClassVars
+  end
 
   on_message '/start' do |bot, message|
     bot.api.send_message(chat_id: message.chat.id, text: 'Bienvenido a Fiubak. Usa /ayuda para más información')
@@ -20,6 +24,7 @@ class Routes
     bot.api.send_message(chat_id: message.chat.id, text: "Bienvenido #{respuesta.nombre}")
 
   rescue ErrorApi => e
+    @@logger.error "[/registrar] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /registrar <nombre>,<email>')
@@ -32,6 +37,7 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id, text: "Auto con patente #{respuesta.patente} ingresado al sistema")
   rescue ErrorApi => e
+    @@logger.error "[/ingresar_auto] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /ingresar_auto <modelo>,<patente>,<kilometros>,<año>')
@@ -51,6 +57,7 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
   rescue ErrorApi => e
+    @@logger.error "[/consultar_mis_autos] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -69,6 +76,7 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
   rescue ErrorApi => e
+    @@logger.error "[/listar_autos] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -79,6 +87,7 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id, text: "Se ha registrado la venta de tu vehiculo de patente #{respuesta.patente}")
   rescue ErrorApi => e
+    @@logger.error "[/vender_a_fiubak] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /vender_a_fiubak <patente>')
@@ -93,6 +102,7 @@ class Routes
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /publicar_p2p <patente>, <precio>')
   rescue ErrorApi => e
+    @@logger.error "[/publicar_p2p] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -105,6 +115,7 @@ class Routes
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /comprar <patente>')
   rescue ErrorApi => e
+    @@logger.error "[/comprar] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -118,6 +129,7 @@ class Routes
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /realizar_oferta <patente>, <precio_oferta>')
   rescue ErrorApi => e
+    @@logger.error "[/realizar_oferta] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -131,6 +143,7 @@ class Routes
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /rechazar_oferta <ID_oferta>')
   rescue ErrorApi => e
+    @@logger.error "[/rechazar_oferta] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -151,6 +164,7 @@ class Routes
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /consultar_ofertas_recibidas <patente>')
   rescue ErrorApi => e
+    @@logger.error "[/consultar_ofertas_recibidas] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -169,6 +183,7 @@ class Routes
 
     bot.api.send_message(chat_id: message.chat.id, text: mensaje)
   rescue ErrorApi => e
+    @@logger.error "[/consultar_ofertas_realizadas] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 
@@ -182,6 +197,7 @@ class Routes
   rescue ErrorParseo
     bot.api.send_message(chat_id: message.chat.id, text: 'Error: El uso del comando es /aceptar_oferta <id_oferta>')
   rescue ErrorApi => e
+    @@logger.error "[/aceptar_oferta] Hubo un error: '#{e.mensaje}'"
     bot.api.send_message(chat_id: message.chat.id, text: e.mensaje)
   end
 

@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'web_mock'
 require 'endpoints_helper'
+require 'semantic_logger'
+
 # Uncomment to use VCR
 # require 'vcr_helper'
 
@@ -78,14 +80,24 @@ def then_i_get_keyboard_message(token, message_text)
     .to_return(status: 200, body: body.to_json, headers: {})
 end
 
+class FakeLogger
+  def error(_mensaje); end
+
+  def info(_mensaje); end
+
+  def fatal(_mensaje); end
+end
+
 describe 'BotClient' do
+  let(:fake_logger) { FakeLogger.new }
+
   it 'should get a /version message and respond with current version' do
     token = 'fake_token'
 
     when_i_send_text(token, '/version')
     then_i_get_text(token, Version.current)
 
-    app = BotClient.new(token)
+    app = BotClient.new(fake_logger, token)
 
     app.run_once
   end
@@ -96,7 +108,7 @@ describe 'BotClient' do
     when_i_send_text(token, '/start')
     then_i_get_text(token, 'Bienvenido a Fiubak. Usa /ayuda para más información')
 
-    app = BotClient.new(token)
+    app = BotClient.new(fake_logger, token)
 
     app.run_once
   end
@@ -107,7 +119,7 @@ describe 'BotClient' do
     when_i_send_text(token, '/ayuda')
     then_i_get_text(token, Impresora.new.ayuda)
 
-    app = BotClient.new(token)
+    app = BotClient.new(fake_logger, token)
 
     app.run_once
   end
@@ -118,7 +130,7 @@ describe 'BotClient' do
     when_i_send_text(token, '/unknown')
     then_i_get_text(token, 'Comando inválido. Usa /ayuda para más información')
 
-    app = BotClient.new(token)
+    app = BotClient.new(fake_logger, token)
 
     app.run_once
   end
@@ -137,7 +149,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/registrar juan, juan@test.com')
       then_i_get_text(token, 'Bienvenido juan')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -156,7 +168,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/registrar juan, juan@test.com')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -169,7 +181,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/registrar juan')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -193,7 +205,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
       then_i_get_text(token, 'Auto con patente ABC123 ingresado al sistema')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -212,7 +224,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/ingresar_auto Fiat Uno,ABC123,10000,1990')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -225,7 +237,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/ingresar_auto Fiat Uno')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -253,7 +265,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, '#1 ABC123, En revision')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -278,7 +290,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, '#1 ABC123, Cotizado, 5000')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -303,7 +315,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, "#1 AB123CD, Cotizado, 5000\n#2 ABC123, En revision")
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -318,7 +330,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_mis_autos')
       then_i_get_text(token, 'No tenes autos registrados')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -343,7 +355,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Se ha registrado la venta de tu vehiculo de patente ABC123')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -360,7 +372,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/vender_a_fiubak ABC123')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -373,7 +385,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/vender_a_fiubak')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -401,7 +413,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/listar_autos')
       then_i_get_text(token, '#1 Fiat Uno, ABC123, 10000km, año 1990, $15000, Fiubak')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -418,7 +430,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/listar_autos')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -443,7 +455,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/publicar_p2p ABC123, 30000')
       then_i_get_text(token, 'Se ha publicado exitosamente tu vehiculo de patente ABC123 a precio 30000')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -460,7 +472,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/publicar_p2p ABC123, 30000')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -473,7 +485,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/publicar_p2p ABC123')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -499,7 +511,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/comprar ABC123')
       then_i_get_text(token, 'Has comprado a fiubak el auto de patente ABC123 por un precio de 30000')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -516,7 +528,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/comprar ABC123')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -529,7 +541,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/comprar')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -551,7 +563,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/realizar_oferta ABC123, 30000')
       then_i_get_text(token, 'Has realizado con exito la oferta numero 1 al auto de patente ABC123 con un precio de 30000')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -568,7 +580,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/realizar_oferta ABC123, 30000')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -581,7 +593,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/realizar_oferta ABC123')
       then_i_get_text(token, mensaje_error)
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -604,7 +616,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/rechazar_oferta 1')
       then_i_get_text(token, 'Has rechazado la oferta 1')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -621,7 +633,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/rechazar_oferta 1')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -656,7 +668,7 @@ describe 'BotClient' do
 
       when_i_send_text(token, '/consultar_ofertas_recibidas ABC123')
       then_i_get_text(token, '#123 ABC123, $50000, Rechazada')
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -671,7 +683,7 @@ describe 'BotClient' do
 
       when_i_send_text(token, '/consultar_ofertas_recibidas ABC123')
       then_i_get_text(token, "No se han recibido ofertas sobre el auto de patente #{patente}")
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -690,7 +702,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_ofertas_recibidas ABC123')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -701,7 +713,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_ofertas_recibidas')
       then_i_get_text(token, 'Error: El uso del comando es /consultar_ofertas_recibidas <patente>')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -726,7 +738,7 @@ describe 'BotClient' do
 
       when_i_send_text(token, '/consultar_ofertas_realizadas')
       then_i_get_text(token, '#300 ABC123, $50000, Rechazada')
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -743,7 +755,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/consultar_ofertas_realizadas')
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -757,7 +769,7 @@ describe 'BotClient' do
 
       when_i_send_text(token, '/consultar_ofertas_realizadas')
       then_i_get_text(token, 'No se han realizado ofertas')
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -782,7 +794,7 @@ describe 'BotClient' do
       when_i_send_text(token, "/aceptar_oferta #{id_oferta}")
       then_i_get_text(token, "Has aceptado la oferta #{id_oferta}")
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -799,7 +811,7 @@ describe 'BotClient' do
       when_i_send_text(token, "/aceptar_oferta #{id_oferta}")
       then_i_get_text(token, 'Hubo un error en la API')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end
@@ -810,7 +822,7 @@ describe 'BotClient' do
       when_i_send_text(token, '/aceptar_oferta')
       then_i_get_text(token, 'Error: El uso del comando es /aceptar_oferta <id_oferta>')
 
-      app = BotClient.new(token)
+      app = BotClient.new(fake_logger, token)
 
       app.run_once
     end

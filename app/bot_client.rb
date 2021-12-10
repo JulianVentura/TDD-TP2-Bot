@@ -3,17 +3,9 @@ require File.dirname(__FILE__) + '/../app/routes'
 require 'semantic_logger'
 
 class BotClient
-  def initialize(token = ENV['TELEGRAM_TOKEN'], log_level = ENV['LOG_LEVEL'] || 'error', log_url = ENV['LOG_URL'] || 'http://fake.url')
+  def initialize(logger, token = ENV['TELEGRAM_TOKEN'])
     @token = token
-    SemanticLogger.default_level = log_level.to_sym
-    SemanticLogger.add_appender(
-      io: $stdout
-    )
-    SemanticLogger.add_appender(
-      appender: :http,
-      url: log_url
-    )
-    @logger = SemanticLogger['BotClient']
+    @logger = logger
   end
 
   def start
@@ -41,7 +33,7 @@ class BotClient
   def handle_message(message, bot)
     @logger.info "From: @#{message.from.username}, message: #{message.inspect}"
 
-    Routes.new.handle(bot, message)
+    Routes.new(@logger).handle(bot, message)
   rescue StandardError => e
     @logger.fatal e.message
   end
