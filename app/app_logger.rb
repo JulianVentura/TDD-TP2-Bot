@@ -11,5 +11,17 @@ class AppLogger
     @logger = SemanticLogger['BotClient']
   end
 
+  def info(mensaje)
+    @logger.info mensaje
+  end
+
+  def error(mensaje)
+    @logger.error mensaje
+  end
+
+  def fatal(mensaje)
+    @logger.fatal mensaje
+  end
+
   attr_reader :logger
 end

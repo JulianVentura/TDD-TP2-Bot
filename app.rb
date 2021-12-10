@@ -4,4 +4,4 @@ require File.dirname(__FILE__) + '/app/bot_client'
 
 $stdout.sync = true
 
-BotClient.new(AppLogger.new.logger).start
+BotClient.new(AppLogger.new).start
