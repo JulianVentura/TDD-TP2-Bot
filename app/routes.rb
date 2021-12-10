@@ -194,6 +194,6 @@ class Routes
   end
 
   default do |bot, message|
-    bot.api.send_message(chat_id: message.chat.id, text: 'Uh? No te entiendo! Me repetis la pregunta?')
+    bot.api.send_message(chat_id: message.chat.id, text: 'Comando inválido. Usa /ayuda para más información')
   end
 end

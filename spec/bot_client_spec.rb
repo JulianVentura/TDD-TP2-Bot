@@ -112,11 +112,11 @@ describe 'BotClient' do
     app.run_once
   end
 
-  it 'should get an unknown message message and respond with Do not understand' do
+  it 'deberia obtener un mensaje que no se interpretar y devolver un mensaje de ayuda' do
     token = 'fake_token'
 
     when_i_send_text(token, '/unknown')
-    then_i_get_text(token, 'Uh? No te entiendo! Me repetis la pregunta?')
+    then_i_get_text(token, 'Comando inválido. Usa /ayuda para más información')
 
     app = BotClient.new(token)
 
