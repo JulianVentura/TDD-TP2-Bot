@@ -92,7 +92,7 @@ class SistemaFiubak
 
   def comprar(datos_compraventa_fiubak)
     endpoint = "/autos/#{datos_compraventa_fiubak.patente}/comprar"
-    body = { id_prop: datos_compraventa_fiubak.id_prop }
+    body = { id_comprador: datos_compraventa_fiubak.id_prop }
     respuesta = realizar_post(endpoint, body)
 
     respuesta_json = parsear_json(respuesta, 200)
