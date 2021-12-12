@@ -30,3 +30,8 @@ Característica: Aceptar oferta
     Cuando ingreso el comando "/aceptar_oferta 995"
     Y se listan los autos en venta
     Entonces el auto de patente "ABC123" no se encuentra
+
+  Escenario: AO6 - Aceptacion de oferta rechaza el resto de ofertas pendientes
+    Cuando ingreso el comando "/aceptar_oferta 995"
+    Y el tercer usuario consulta sus ofertas realizadas
+    Entonces la oferta del auto "ABC123" del tercer usuario esta rechazada

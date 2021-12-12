@@ -19,3 +19,18 @@ Característica: Realizar oferta
   Escenario: RO3 -  Realizacion de oferta fallida por falta de datos
     Cuando ingreso el comando "/realizar_oferta ABC123"
     Entonces recibo mensaje de error por falta de datos
+
+  Escenario: RO4 - Realizacion de oferta fallida por publicacion inexistente
+    Dado que existe un auto modelo "Fiat Uno", patente "FGH123", kilometros 100000 y año 1999
+    Cuando ingreso el comando "/realizar_oferta FGH123, 5000"
+    Entonces recibo mensaje de error por publicacion inexistente
+
+  Escenario: RO5 - Realizacion de oferta fallida por oferta a publicacion fiubak
+    Dado que existe un auto publicado por Fiubak modelo "Fiat Uno", patente "HHH888", kilometros 100000, año 1999 y precio 15000
+    Cuando ingreso el comando "/realizar_oferta HHH888, 5000"
+    Entonces recibo mensaje de error por publicacion de fiubak
+
+  Escenario: RO6 - Realizacion de oferta fallida por oferta duplicada
+    Cuando ingreso el comando "/realizar_oferta ABC123, 1000"
+    Cuando ingreso el comando "/realizar_oferta ABC123, 5000"
+    Entonces recibo mensaje de error por ofertar mas de una vez
